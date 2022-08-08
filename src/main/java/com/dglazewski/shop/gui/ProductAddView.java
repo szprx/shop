@@ -18,7 +18,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
 @Route("product/add")
-@CssImport("./frontend/FormLayout.css")
+@CssImport("./styles/styles.css")
 public class ProductAddView extends VerticalLayout {
     private TextField nameTextField;
     private NumberField priceNumberField;
