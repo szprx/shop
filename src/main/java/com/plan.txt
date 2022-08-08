@@ -1,0 +1,44 @@
+ENCJE:
+-produkt
+-zamowienie
+-klient
+
+PRODUKT:
+- INTRGER id
+- NAZWA string
+- CENA W PLN double
+- ILOŚĆ int
+
+ZAMOWIENIE:
+- INTRGER id
+-  lista id produktow LISTA<Integer> lub lista produktow normalnie
+- status oplacenia boolean
+- id klienta integer lub normalnie klient
+
+KLIENT:
+- INTRGER id
+- Imie
+- Nazwisko
+- email
+- Historia zamowien po id List<id>
+
+///////////////////// DO ZROBIENIA TERAZ /////////////////////
+
+sprawdzic to po dodaniu produktow i zrobieniu ordera
+stworzyc service, zastanowic sie czy potrzebenbe interfejsy z metodami potrzebnymi do serwisu
+stworzyc odpowiednie controllery
+
+
+///////////////////// DO ZROBIECIA POZNIEJ /////////////////////
+Dodatkowo zrobic zmieane waluty przy uzyciu zewnetrznego api
+
+Co można zrobić z zamowieniem?
+- stworzyc nowe
+- edytowac czyli anulowac lub za nie zaplacic ( co bedzie sie dzialo po stronie frontu lub, zrobie to w controllerach)
+- pobrac zamowienie aby je wtswietlic
+/////////////////////USER/////////////////////
+bedzie wymagane dodanie konto dla kazdego uzytkownika wydaje mi sie ze dla obslugi bedzie oddzielna klasa
+cos typu dla pracownika sklepu inne konto dla admina i dla uzytkownika
+User do seciurity bedzie polaczony z POJO Customer Admin Employee
+Customer musi byc polaczony z User, natomiast
+
