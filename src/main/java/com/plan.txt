@@ -42,3 +42,14 @@ cos typu dla pracownika sklepu inne konto dla admina i dla uzytkownika
 User do seciurity bedzie polaczony z POJO Customer Admin Employee
 Customer musi byc polaczony z User, natomiast
 
+09.08.2022
+dopisac validator do doddawania produktow
+dopisac funkcjonalonosc do guzika canel w product/add
+
+dzialajacy styles.css
+        ///ALE DZIALA///
+//        Style nStyle = this.nameTextField.getElement().getStyle();
+//        nStyle.set("margin-bottom","10px");
+//        nStyle.set("border-radius","4px");
+//        nStyle.set("border","2px solid red");
+//        nStyle.set("font-size","20em!important");

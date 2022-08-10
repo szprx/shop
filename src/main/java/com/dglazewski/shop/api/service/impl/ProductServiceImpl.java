@@ -1,6 +1,6 @@
 package com.dglazewski.shop.api.service.impl;
 
-import com.dglazewski.shop.api.database_response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.repository.ProductRepository;

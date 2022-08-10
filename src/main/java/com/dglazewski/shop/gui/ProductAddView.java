@@ -1,8 +1,7 @@
 package com.dglazewski.shop.gui;
 
-import com.dglazewski.shop.api.database_response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
-import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.ProductService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -23,13 +22,15 @@ public class ProductAddView extends VerticalLayout {
     private TextField nameTextField;
     private NumberField priceNumberField;
     private IntegerField amountIntegerField;
+    private TextField imageUrlTextField;
     private FormLayout addingFromLayout;
 
     private Button addProductButton;
     private Button cancelButton;
+    private Button clearButton;
     private HorizontalLayout buttonLayout;
 
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductAddView(ProductService productService) {
         this.productService = productService;
@@ -37,18 +38,26 @@ public class ProductAddView extends VerticalLayout {
         this.nameTextField = new TextField("name");
         this.priceNumberField = new NumberField("price");
         this.amountIntegerField = new IntegerField("amount");
+        this.imageUrlTextField = new TextField("image url");
         this.addingFromLayout = new FormLayout();
 
-        this.addProductButton = new Button("add");
+        this.addProductButton = new Button("Add");
+        this.clearButton = new Button("Clear");
         this.cancelButton = new Button("Cancel");
-        this.buttonLayout = new HorizontalLayout(addProductButton, cancelButton);
+        this.buttonLayout = new HorizontalLayout(addProductButton, clearButton, cancelButton);
 
         configNameTextField();
         configPriceNumberField();
         configAmountIntegerField();
+        configImageUrlTextField();
         configAddingFromLayout();
 
         configAddProductButton();
+        configClearButton();
+        configCancelButton();
+
+        setAlignItems(Alignment.AUTO);
+        setJustifyContentMode(JustifyContentMode.CENTER);
 
         add(addingFromLayout, buttonLayout);
     }
@@ -60,25 +69,46 @@ public class ProductAddView extends VerticalLayout {
                     Product.create(
                             this.nameTextField.getValue(),
                             this.priceNumberField.getValue(),
-                            this.amountIntegerField.getValue()));
-
-            if (dataBaseStatusResponse.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
-                Notification.show("Product added");
-            } else {
-                Notification.show(dataBaseStatusResponse.getStatus().toString());
-            }
+                            this.amountIntegerField.getValue(),
+                            this.imageUrlTextField.getValue()));
+            Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
         });
+    }
+
+    private void configClearButton() {
+        this.clearButton.addClickListener(buttonClickEvent -> {
+            this.nameTextField.setValue("");
+            this.priceNumberField.setValue(0.0);
+            this.amountIntegerField.setValue(1);
+            this.imageUrlTextField.setValue("");
+            Notification.show("LABELS CLEARED");
+        });
+    }
+
+    private void configCancelButton() {
+        this.cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        this.cancelButton.addClickListener(buttonClickEvent -> this.cancelButton.getUI().ifPresent(ui ->
+                ui.navigate("product/all")));
     }
 
     private void configNameTextField() {
         this.nameTextField.setClearButtonVisible(false);
+        this.nameTextField.setRequired(true);
+        this.nameTextField.setRequiredIndicatorVisible(true);
+    }
+
+    private void configImageUrlTextField() {
+        this.imageUrlTextField.setClearButtonVisible(false);
+        this.imageUrlTextField.setRequiredIndicatorVisible(true);
+
     }
 
     private void configAddingFromLayout() {
-        this.addingFromLayout.add(this.nameTextField,
-                this.priceNumberField, this.amountIntegerField);
-        this.addingFromLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("320px", 2));
-        this.addingFromLayout.setColspan(this.nameTextField, 2);
+        this.addingFromLayout.add(
+                this.nameTextField, this.priceNumberField,
+                this.imageUrlTextField, this.amountIntegerField);
+        this.addingFromLayout.setResponsiveSteps(new FormLayout.ResponsiveStep("200px", 2));
+        this.addingFromLayout.setColspan(this.nameTextField, 1);
     }
 
     private void configAmountIntegerField() {
@@ -87,12 +117,15 @@ public class ProductAddView extends VerticalLayout {
         this.amountIntegerField.setMax(10000);
         this.amountIntegerField.setValue(1);
         this.amountIntegerField.setHasControls(true);
+        this.amountIntegerField.setRequiredIndicatorVisible(true);
     }
 
     private void configPriceNumberField() {
+        this.priceNumberField.setValue(1.0);
         Div dollarSuffix = new Div();
         dollarSuffix.setText("$");
         this.priceNumberField.setSuffixComponent(dollarSuffix);
+        this.priceNumberField.setRequiredIndicatorVisible(true);
     }
 
 

@@ -1,6 +1,6 @@
 package com.dglazewski.shop.gui;
 
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -10,9 +10,11 @@ import com.vaadin.flow.router.Route;
 
 @Route("login")
 @PageTitle("Login | Vaadin")
+@CssImport("./styles/styles.css")
 public class LoginView extends VerticalLayout {
 
     public LoginView() {
+        addClassName("login-view");
         LoginI18n i18n = LoginI18n.createDefault();
 
         LoginI18n.Form loginI18nForm = i18n.getForm();
@@ -31,6 +33,7 @@ public class LoginView extends VerticalLayout {
         LoginForm loginForm = new LoginForm();
         loginForm.setI18n(i18n);
         loginForm.setAction("login");
+        loginForm.addClassName("login-form");
 
         setSizeFull();
         setAlignItems(Alignment.CENTER); // vertical centering for HorizontalLayouts

@@ -29,21 +29,25 @@ public class Product {
     private double price;
     @Column(name = "amount")
     private int amount;
+    @Column(name = "image_url")
+    private String imageUrl;
 
-    public static Product create(String name, double price, int amount) {
+    public static Product create(String name, double price, int amount, String imageUrl) {
         return Product.builder()
                 .name(name)
                 .price(price)
                 .amount(amount)
+                .imageUrl(imageUrl)
                 .build();
     }
 
     public Product updateWith(Product product) {
         return Product.builder()
                 .id(this.id)
-                .name(product.name)
-                .price(product.price)
-                .amount(product.amount)
+                .name(product.getName())
+                .price(product.getPrice())
+                .amount(product.getAmount())
+                .imageUrl(product.getImageUrl())
                 .build();
     }
 }

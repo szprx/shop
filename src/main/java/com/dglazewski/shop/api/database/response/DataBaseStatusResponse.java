@@ -1,4 +1,4 @@
-package com.dglazewski.shop.api.database_response;
+package com.dglazewski.shop.api.database.response;
 
 import com.dglazewski.shop.api.enums.Status;
 import lombok.AllArgsConstructor;

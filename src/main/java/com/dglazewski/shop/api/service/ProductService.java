@@ -1,6 +1,6 @@
 package com.dglazewski.shop.api.service;
 
-import com.dglazewski.shop.api.database_response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 
 import java.util.List;
