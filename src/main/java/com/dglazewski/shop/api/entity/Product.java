@@ -52,4 +52,8 @@ public class Product {
                 .imageUrl(product.getImageUrl())
                 .build();
     }
+    public boolean isValid(Product product) {
+return true;
+    }
 }
+

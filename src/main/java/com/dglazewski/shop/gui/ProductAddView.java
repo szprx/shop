@@ -16,7 +16,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
-@Route("product/add")
+@Route("admin/product/add")
 @CssImport("./styles/styles.css")
 public class ProductAddView extends VerticalLayout {
     private TextField nameTextField;
@@ -88,7 +88,7 @@ public class ProductAddView extends VerticalLayout {
     private void configCancelButton() {
         this.cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         this.cancelButton.addClickListener(buttonClickEvent -> this.cancelButton.getUI().ifPresent(ui ->
-                ui.navigate("product/all")));
+                ui.navigate("admin/product/all")));
     }
 
     private void configNameTextField() {
