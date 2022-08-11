@@ -75,8 +75,7 @@ public class plv extends VerticalLayout {
 
         TextField nameTextField = new TextField();
         nameTextField.setWidthFull();
-        binder.forField(nameTextField)
-                .asRequired("Name must not be empty")
+        binder.forField(nameTextField).asRequired("Name must not be empty")
                 .withStatusLabel(nameValidationMessage)
                 .bind(Product::getName, Product::setName);
         nameColumn.setEditorComponent(nameTextField);
@@ -96,16 +95,15 @@ public class plv extends VerticalLayout {
         priceColumn.setEditorComponent(priceNumberField);
 
         TextField imageUrlTextField = new TextField();
-        nameTextField.setWidthFull();
-        binder.forField(imageUrlTextField)
-                .asRequired("Url must not be empty")
+        imageUrlTextField.setWidthFull();
+        binder.forField(imageUrlTextField).asRequired("Url must not be empty")
                 .withStatusLabel(imageUrlValidationMessage)
                 .bind(Product::getImageUrl, Product::setImageUrl);
-        nameColumn.setEditorComponent(imageUrlTextField);
+        imageColumn.setEditorComponent(imageUrlTextField);
 
 
         Button saveButton = new Button("Save", e -> editor.save());
-        Button cancelButton = new Button(VaadinIcon.CLOSE.create(),//TODO: change to cancel
+        Button cancelButton = new Button("Cancel",
                 e -> editor.cancel());
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ICON,
                 ButtonVariant.LUMO_ERROR);
