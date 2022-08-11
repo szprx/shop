@@ -47,6 +47,7 @@ dopisac validator do doddawania produktow
 dopisac funkcjonalonosc do guzika canel w product/add
 
 dzialajacy styles.css
+//@CssImport("./styles/styles.css")
         ///ALE DZIALA///
 //        Style nStyle = this.nameTextField.getElement().getStyle();
 //        nStyle.set("margin-bottom","10px");

@@ -4,6 +4,7 @@ import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
 import com.vaadin.flow.component.Unit;
+import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -24,11 +25,13 @@ import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Style;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-@Route("admin/product/all")
+@Route(value="admin/product/all", layout = AppLayoutDrawer.class)
+@PageTitle("Products | ADMIN")
 public class ProductsListView extends VerticalLayout {
 
     //SERVICE
@@ -212,8 +215,11 @@ public class ProductsListView extends VerticalLayout {
         getThemeList().clear();
         getThemeList().add("spacing-s");
 
+        productGrid.setWidthFull();
+        productGrid.setHeight("1000px");
+
         Style style = this.getElement().getStyle();
-        style.set("margin", "10px");
+//        style.set("margin", "10px");
     }
 
     private void configAddButton() {

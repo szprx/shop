@@ -5,7 +5,6 @@ import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
@@ -17,10 +16,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route("admin/product/add")
-@CssImport("./styles/styles.css")
+@Route(value="admin/product/add", layout = AppLayoutDrawer.class)
+@PageTitle("Add product | ADMIN")
 public class ProductAddView extends VerticalLayout {
 
     //SERVICE
