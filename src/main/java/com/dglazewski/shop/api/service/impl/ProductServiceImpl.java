@@ -24,6 +24,11 @@ public class ProductServiceImpl implements ProductService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
         }
+        if (!newProduct.isValid()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_HAS_NOT_VALID_FIELDS
+            );
+        }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
                 productRepository.save(newProduct));
@@ -35,6 +40,11 @@ public class ProductServiceImpl implements ProductService {
         if (product.isEmpty()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
+        }
+        if (!newProduct.isValid()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_HAS_NOT_VALID_FIELDS
+            );
         }
         return product
                 .map(oldProduct -> {

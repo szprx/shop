@@ -52,8 +52,21 @@ public class Product {
                 .imageUrl(product.getImageUrl())
                 .build();
     }
-    public boolean isValid(Product product) {
-return true;
+
+    public boolean isValid() {
+        boolean isValid = true;
+        if (this.name == null || this.name.replace(" ", "").equals("")) {
+            isValid = false;
+        }
+        if (this.price < 0.01) {
+            isValid = false;
+        }
+        if (this.amount < 0) {
+            isValid = false;
+        }
+        if (this.imageUrl == null || this.imageUrl.replace(" ", "").equals("")) {
+            isValid = false;
+        }
+        return isValid;
     }
 }
-

@@ -53,3 +53,4 @@ dzialajacy styles.css
 //        nStyle.set("border-radius","4px");
 //        nStyle.set("border","2px solid red");
 //        nStyle.set("font-size","20em!important");
+TODO: dodac responsywnosc https://vaadin.com/directory/component/responsive-layout/overview
