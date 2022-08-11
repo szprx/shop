@@ -10,6 +10,7 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -22,11 +23,16 @@ import com.vaadin.flow.router.Route;
 
 @Route("list")
 public class plv extends VerticalLayout {
+
+    //SERVICE
     private final ProductService productService;
 
     private final TextField filterTextField;
+
+    //BUTTON
     private final Button addButton;
 
+    //GRID
     private final Grid<Product> productGrid;
 
     //VALIDATION MESSAGE
@@ -36,6 +42,9 @@ public class plv extends VerticalLayout {
     private final ValidationMessage imageUrlValidationMessage;
 
     public plv(ProductService productService) {
+
+        //BUTTON
+        this.addButton = new Button("Add product");
 
         //VALIDATION MESSAGE
         this.nameValidationMessage = new ValidationMessage();
@@ -126,8 +135,6 @@ public class plv extends VerticalLayout {
             Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             editor.save();
         }
-
-
         );
         Button cancelButton = new Button("Cancel",
                 e -> editor.cancel());
@@ -156,7 +163,6 @@ public class plv extends VerticalLayout {
                 imageUrlValidationMessage);
 
         this.filterTextField = new TextField();
-        this.addButton = new Button("Add new product");
 
         configFilterTextField();
         configAddButton();
@@ -175,7 +181,7 @@ public class plv extends VerticalLayout {
 
 
     private void configFilterTextField() {
-        this.filterTextField.setPlaceholder("Filter by name...");
+        this.filterTextField.setPlaceholder("Search by name...");
     }
 
     private void configAddButton() {
