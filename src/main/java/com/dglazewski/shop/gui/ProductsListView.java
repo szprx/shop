@@ -8,8 +8,11 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -19,8 +22,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.data.validator.IntegerRangeValidator;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.Route;
+
+import java.util.List;
 
 @Route("admin/product/all")
 public class ProductsListView extends VerticalLayout {
@@ -29,7 +35,7 @@ public class ProductsListView extends VerticalLayout {
     private final ProductService productService;
 
     //FIELDS
-    private final TextField filterTextField;
+    private final TextField searchField;
     private final TextField nameTextField;
     private final TextField imageUrlTextField;
     private final NumberField priceNumberField;
@@ -46,6 +52,7 @@ public class ProductsListView extends VerticalLayout {
 
     //GRID
     private final Grid<Product> productGrid;
+    private final GridListDataView<Product> dataView;
 
     //BINDER
     private final Binder<Product> binder;
@@ -65,10 +72,11 @@ public class ProductsListView extends VerticalLayout {
 
         //SERVICE
         this.productService = productService;
+        List<Product> products = this.productService.getAllProducts().getEntity();
 
         //FIELDS
-        this.filterTextField = new TextField();
-        this.filterTextField.setPlaceholder("Search by name...");
+        this.searchField = new TextField();
+        this.searchField.setPlaceholder("Search by name...");
 
         this.nameTextField = new TextField();
         this.nameTextField.setWidthFull();
@@ -94,7 +102,7 @@ public class ProductsListView extends VerticalLayout {
 
         //GRID
         this.productGrid = new Grid<>(Product.class, false);
-        this.productGrid.setItems(this.productService.getAllProducts().getEntity());
+        this.dataView = this.productGrid.setItems(products);
 
         //BINDER
         this.binder = new Binder<>(Product.class);
@@ -109,11 +117,28 @@ public class ProductsListView extends VerticalLayout {
 
         this.editColumn.setEditorComponent(getEditingModeActions());
 
+        configSearching();
         configCss();
 
-        add(new HorizontalLayout(this.filterTextField, this.addButton));
+        add(new HorizontalLayout(this.searchField, this.addButton));
         add(this.productGrid,
                 this.nameValidationMessage, this.amountValidationMessage, this.priceValidationMessage, this.imageUrlValidationMessage);
+    }
+
+    private void configSearching() {
+        this.searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
+        this.searchField.setValueChangeMode(ValueChangeMode.EAGER);
+        this.searchField.addValueChangeListener(e -> this.dataView.refreshAll());
+
+        dataView.addFilter(product -> {
+            String searchTerm = this.searchField.getValue().trim();
+            if (searchTerm.isEmpty()){
+                return true;
+
+            }
+            return matchesTerm(product.getName(),
+                    searchTerm);
+        });
     }
 
     private void configColumns() {
@@ -153,7 +178,7 @@ public class ProductsListView extends VerticalLayout {
         this.amountColumn.setEditorComponent(this.amountIntegerField);
 
         this.binder.forField(this.priceNumberField).asRequired("Price must not be empty")
-                .withValidator(new DoubleRangeValidator("Please enter a valid price",0.01,1000000.00))
+                .withValidator(new DoubleRangeValidator("Please enter a valid price", 0.01, 1000000.00))
                 .withStatusLabel(this.priceValidationMessage)
                 .bind(Product::getPrice, Product::setPrice);
         this.priceColumn.setEditorComponent(this.priceNumberField);
@@ -216,5 +241,9 @@ public class ProductsListView extends VerticalLayout {
         this.addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.addButton.addClickListener(buttonClickEvent -> this.addButton.getUI().ifPresent(ui ->
                 ui.navigate("admin/product/add")));
+    }
+
+    private boolean matchesTerm(String value, String searchTerm) {
+        return value.toLowerCase().contains(searchTerm.toLowerCase());
     }
 }
