@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.admin;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
@@ -19,7 +19,7 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route(value="admin/product/add", layout = AppLayoutDrawer.class)
+@Route(value="admin/product/add", layout = AppLayoutDrawerAdmin.class)
 @PageTitle("Add product | ADMIN")
 public class ProductAddView extends VerticalLayout {
 

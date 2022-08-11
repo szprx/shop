@@ -1,10 +1,9 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.admin;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
 import com.vaadin.flow.component.Unit;
-import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
@@ -30,8 +29,8 @@ import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-@Route(value="admin/product/all", layout = AppLayoutDrawer.class)
-@PageTitle("Products | ADMIN")
+@Route(value = "admin/product/all", layout = AppLayoutDrawerAdmin.class)
+@PageTitle("All products | ADMIN")
 public class ProductsListView extends VerticalLayout {
 
     //SERVICE

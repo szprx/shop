@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.admin;
 
 
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -11,9 +11,9 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 
-public class AppLayoutDrawer extends AppLayout {
+public class AppLayoutDrawerAdmin extends AppLayout {
 
-    public AppLayoutDrawer() {
+    public AppLayoutDrawerAdmin() {
         DrawerToggle toggle = new DrawerToggle();
 
         H1 title = new H1("Dashboard");
