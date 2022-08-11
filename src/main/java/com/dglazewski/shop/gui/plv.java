@@ -1,5 +1,6 @@
 package com.dglazewski.shop.gui;
 
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
 import com.vaadin.flow.component.Unit;
@@ -9,7 +10,7 @@ import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -23,18 +24,28 @@ import com.vaadin.flow.router.Route;
 public class plv extends VerticalLayout {
     private final ProductService productService;
 
-    private TextField filterTextField;
-    private Button addButton;
+    private final TextField filterTextField;
+    private final Button addButton;
 
     private final Grid<Product> productGrid;
 
+    //VALIDATION MESSAGE
+    private final ValidationMessage nameValidationMessage;
+    private final ValidationMessage priceValidationMessage;
+    private final ValidationMessage amountValidationMessage;
+    private final ValidationMessage imageUrlValidationMessage;
+
     public plv(ProductService productService) {
 
-        //
-        ValidationMessage nameValidationMessage = new ValidationMessage();
-        ValidationMessage amountValidationMessage = new ValidationMessage();
-        ValidationMessage priceValidationMessage = new ValidationMessage();
-        ValidationMessage imageUrlValidationMessage = new ValidationMessage();
+        //VALIDATION MESSAGE
+        this.nameValidationMessage = new ValidationMessage();
+        this.priceValidationMessage = new ValidationMessage();
+        this.amountValidationMessage = new ValidationMessage();
+        this.imageUrlValidationMessage = new ValidationMessage();
+
+        this.productService = productService;
+
+
 
         this.productGrid = new Grid<>(Product.class, false);
         Editor<Product> editor = productGrid.getEditor();
@@ -102,7 +113,22 @@ public class plv extends VerticalLayout {
         imageColumn.setEditorComponent(imageUrlTextField);
 
 
-        Button saveButton = new Button("Save", e -> editor.save());
+        Button saveButton = new Button("Save", e ->
+        {
+            //TODO:Add Validator
+            DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.updateProduct(
+                    this.productGrid.getEditor().getItem().getId(),
+                    Product.create(
+                            nameTextField.getValue(),
+                            priceNumberField.getValue(),
+                            amountIntegerField.getValue(),
+                            imageUrlTextField.getValue()));
+            Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
+            editor.save();
+        }
+
+
+        );
         Button cancelButton = new Button("Cancel",
                 e -> editor.cancel());
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ICON,
@@ -118,9 +144,7 @@ public class plv extends VerticalLayout {
             priceValidationMessage.setText("");
             imageUrlValidationMessage.setText("");
         });
-        this.productService = productService;
 
-        //przypisywanie do grida listy produktow
         productGrid.setItems(this.productService.getAllProducts().getEntity());
 
         getThemeList().clear();
@@ -130,8 +154,6 @@ public class plv extends VerticalLayout {
                 amountValidationMessage,
                 priceValidationMessage,
                 imageUrlValidationMessage);
-        //
-
 
         this.filterTextField = new TextField();
         this.addButton = new Button("Add new product");
@@ -150,7 +172,6 @@ public class plv extends VerticalLayout {
         Style style = this.getElement().getStyle();
         style.set("margin", "10px");
     }
-
 
 
     private void configFilterTextField() {
