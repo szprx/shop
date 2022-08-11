@@ -14,72 +14,122 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.validator.DoubleRangeValidator;
+import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.Route;
 
 @Route("admin/product/add")
 @CssImport("./styles/styles.css")
 public class ProductAddView extends VerticalLayout {
-    private TextField nameTextField;
-    private NumberField priceNumberField;
-    private IntegerField amountIntegerField;
-    private TextField imageUrlTextField;
-    private FormLayout addingFromLayout;
 
-    private Button addProductButton;
-    private Button cancelButton;
-    private Button clearButton;
-    private HorizontalLayout buttonLayout;
-
+    //SERVICE
     private final ProductService productService;
 
+    //FIELDS
+    private final TextField nameTextField;
+    private final NumberField priceNumberField;
+    private final IntegerField amountIntegerField;
+    private final TextField imageUrlTextField;
+    private final FormLayout addingFromLayout;
+
+    //BUTTON
+    private final Button addProductButton;
+    private final Button cancelButton;
+    private final Button clearButton;
+
+
+    //BINDER
+    private final Binder<Product> binder;
+
     public ProductAddView(ProductService productService) {
+        //SERVICE
         this.productService = productService;
 
+        //FIELDS
         this.nameTextField = new TextField("name");
-        this.priceNumberField = new NumberField("price");
-        this.amountIntegerField = new IntegerField("amount");
-        this.imageUrlTextField = new TextField("image url");
-        this.addingFromLayout = new FormLayout();
-
-        this.addProductButton = new Button("Add");
-        this.clearButton = new Button("Clear");
-        this.cancelButton = new Button("Cancel");
-        this.buttonLayout = new HorizontalLayout(addProductButton, clearButton, cancelButton);
-
         configNameTextField();
+
+        this.priceNumberField = new NumberField("price");
         configPriceNumberField();
+
+        this.amountIntegerField = new IntegerField("amount");
         configAmountIntegerField();
+
+        this.imageUrlTextField = new TextField("image url");
         configImageUrlTextField();
+
+        this.addingFromLayout = new FormLayout();
         configAddingFromLayout();
 
+        //BUTTON
+        this.addProductButton = new Button("Add");
         configAddProductButton();
+
+        this.clearButton = new Button("Clear");
         configClearButton();
+
+        this.cancelButton = new Button("Cancel");
         configCancelButton();
 
+        //BINDER
+        this.binder = new Binder<>(Product.class);
+        bindFields();
+
+        configCss();
+
+        add(addingFromLayout,
+                new HorizontalLayout(addProductButton, clearButton, cancelButton));
+    }
+
+    private void bindFields() {
+        this.binder.forField(nameTextField)
+                .asRequired("Every product has need to have name")
+                .withValidator(
+                        name -> name.length() >= 2,
+                        "Name must contain at least two characters")
+                .bind(Product::getName, Product::setName);
+
+        this.binder.forField(this.amountIntegerField).asRequired("Every product has need to have amount")
+                .withValidator(new IntegerRangeValidator("Invalid amount", 0, 100000))
+                .bind(Product::getAmount, Product::setAmount);
+
+        this.binder.forField(this.priceNumberField).asRequired("Every product has need to have price")
+                .withValidator(new DoubleRangeValidator("Invalid price", 0.01, 1000000.00))
+                .bind(Product::getPrice, Product::setPrice);
+
+        this.binder.forField(this.imageUrlTextField).asRequired("Every product has need to have image URL")
+                .bind(Product::getImageUrl, Product::setImageUrl);
+    }
+
+    private void configCss() {
         setAlignItems(Alignment.AUTO);
         setJustifyContentMode(JustifyContentMode.CENTER);
-
-        add(addingFromLayout, buttonLayout);
     }
 
     private void configAddProductButton() {
         this.addProductButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.addProductButton.addClickListener(buttonClickEvent -> {
-            DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.addProduct(
-                    Product.create(
-                            this.nameTextField.getValue(),
-                            this.priceNumberField.getValue(),
-                            this.amountIntegerField.getValue(),
-                            this.imageUrlTextField.getValue()));
-            Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
+            try {
+                DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.addProduct(
+                        Product.create(
+                                this.nameTextField.getValue(),
+                                this.priceNumberField.getValue(),
+                                this.amountIntegerField.getValue(),
+                                this.imageUrlTextField.getValue()));
+                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+                Notification.show("ONE OR MORE OF THE VALUES OF THE PRODUCT ARE EMPTY");
+            }
         });
     }
 
     private void configClearButton() {
         this.clearButton.addClickListener(buttonClickEvent -> {
             this.nameTextField.setValue("");
-            this.priceNumberField.setValue(0.0);
-            this.amountIntegerField.setValue(1);
+            this.priceNumberField.setValue(0.00);
+            this.amountIntegerField.setValue(0);
             this.imageUrlTextField.setValue("");
             Notification.show("LABELS CLEARED");
         });
@@ -93,13 +143,10 @@ public class ProductAddView extends VerticalLayout {
 
     private void configNameTextField() {
         this.nameTextField.setClearButtonVisible(false);
-        this.nameTextField.setRequired(true);
-        this.nameTextField.setRequiredIndicatorVisible(true);
     }
 
     private void configImageUrlTextField() {
         this.imageUrlTextField.setClearButtonVisible(false);
-        this.imageUrlTextField.setRequiredIndicatorVisible(true);
 
     }
 
@@ -112,12 +159,11 @@ public class ProductAddView extends VerticalLayout {
     }
 
     private void configAmountIntegerField() {
-        this.amountIntegerField.setHelperText("Max 10 000 items");
+        this.amountIntegerField.setHelperText("Max 100 000 items");
         this.amountIntegerField.setMin(0);
-        this.amountIntegerField.setMax(10000);
+        this.amountIntegerField.setMax(100000);
         this.amountIntegerField.setValue(1);
         this.amountIntegerField.setHasControls(true);
-        this.amountIntegerField.setRequiredIndicatorVisible(true);
     }
 
     private void configPriceNumberField() {
@@ -125,8 +171,5 @@ public class ProductAddView extends VerticalLayout {
         Div dollarSuffix = new Div();
         dollarSuffix.setText("$");
         this.priceNumberField.setSuffixComponent(dollarSuffix);
-        this.priceNumberField.setRequiredIndicatorVisible(true);
     }
-
-
 }

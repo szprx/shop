@@ -41,12 +41,6 @@ public class ProductsListView extends VerticalLayout {
     private final NumberField priceNumberField;
     private final IntegerField amountIntegerField;
 
-    //VALIDATION MESSAGE
-    private final ValidationMessage nameValidationMessage;
-    private final ValidationMessage priceValidationMessage;
-    private final ValidationMessage amountValidationMessage;
-    private final ValidationMessage imageUrlValidationMessage;
-
     //BUTTON
     private final Button addButton;
 
@@ -90,12 +84,6 @@ public class ProductsListView extends VerticalLayout {
         this.imageUrlTextField = new TextField();
         this.imageUrlTextField.setWidthFull();
 
-        //VALIDATION MESSAGE
-        this.nameValidationMessage = new ValidationMessage();
-        this.priceValidationMessage = new ValidationMessage();
-        this.amountValidationMessage = new ValidationMessage();
-        this.imageUrlValidationMessage = new ValidationMessage();
-
         //BUTTON
         this.addButton = new Button("Add product");
         configAddButton();
@@ -121,8 +109,7 @@ public class ProductsListView extends VerticalLayout {
         configCss();
 
         add(new HorizontalLayout(this.searchField, this.addButton));
-        add(this.productGrid,
-                this.nameValidationMessage, this.amountValidationMessage, this.priceValidationMessage, this.imageUrlValidationMessage);
+        add(this.productGrid);
     }
 
     private void configSearching() {
@@ -132,9 +119,8 @@ public class ProductsListView extends VerticalLayout {
 
         dataView.addFilter(product -> {
             String searchTerm = this.searchField.getValue().trim();
-            if (searchTerm.isEmpty()){
+            if (searchTerm.isEmpty()) {
                 return true;
-
             }
             return matchesTerm(product.getName(),
                     searchTerm);
@@ -145,11 +131,11 @@ public class ProductsListView extends VerticalLayout {
         this.nameColumn = this.productGrid.addColumn(Product::getName).setHeader("Name")
                 .setSortable(true).setWidth("400px").setFlexGrow(1);
         this.amountColumn = this.productGrid.addColumn(Product::getAmount).setHeader("Amount")
-                .setSortable(true).setWidth("100px").setFlexGrow(0);
+                .setSortable(true).setWidth("110px").setFlexGrow(0);
         this.priceColumn = this.productGrid.addColumn(Product::getPrice).setHeader("Price")
-                .setSortable(true).setWidth("100px").setFlexGrow(0);
+                .setSortable(true).setWidth("110px").setFlexGrow(0);
         this.imageColumn = this.productGrid.addComponentColumn(product -> {
-            Image image = new Image(product.getImageUrl(), "alt text");
+            Image image = new Image(product.getImageUrl(), "no image available");
             image.setWidth(80, Unit.PIXELS);
             image.setHeight(80, Unit.PIXELS);
             return image;
@@ -166,54 +152,47 @@ public class ProductsListView extends VerticalLayout {
     }
 
     private void bindFieldsToColumns() {
-        this.binder.forField(this.nameTextField).asRequired("Name must not be empty")
-                .withStatusLabel(this.nameValidationMessage)
+        this.binder.forField(this.nameTextField).asRequired("Fill this field")
                 .bind(Product::getName, Product::setName);
         this.nameColumn.setEditorComponent(this.nameTextField);
 
-        this.binder.forField(this.amountIntegerField).asRequired("Amount must not be empty")
-                .withValidator(new IntegerRangeValidator("Please enter a valid amount", 0, 100000))
-                .withStatusLabel(this.amountValidationMessage)
+        this.binder.forField(this.amountIntegerField).asRequired("Fill this field")
+                .withValidator(new IntegerRangeValidator("Invalid amount", 0, 100000))
                 .bind(Product::getAmount, Product::setAmount);
         this.amountColumn.setEditorComponent(this.amountIntegerField);
 
-        this.binder.forField(this.priceNumberField).asRequired("Price must not be empty")
-                .withValidator(new DoubleRangeValidator("Please enter a valid price", 0.01, 1000000.00))
-                .withStatusLabel(this.priceValidationMessage)
+        this.binder.forField(this.priceNumberField).asRequired("Fill this field")
+                .withValidator(new DoubleRangeValidator("Invalid price", 0.01, 1000000.00))
                 .bind(Product::getPrice, Product::setPrice);
         this.priceColumn.setEditorComponent(this.priceNumberField);
 
-        this.binder.forField(this.imageUrlTextField).asRequired("Url must not be empty")
-                .withStatusLabel(this.imageUrlValidationMessage)
+        this.binder.forField(this.imageUrlTextField).asRequired("Fill this field")
                 .bind(Product::getImageUrl, Product::setImageUrl);
         this.imageColumn.setEditorComponent(this.imageUrlTextField);
     }
 
     private void configProductGrindEditor() {
-        this.productGridEditor.addCancelListener(e -> {
-            this.nameValidationMessage.setText("");
-            this.amountValidationMessage.setText("");
-            this.priceValidationMessage.setText("");
-            this.imageUrlValidationMessage.setText("");
-        });
         this.productGridEditor.setBinder(this.binder);
         this.productGridEditor.setBuffered(true);
     }
 
     private HorizontalLayout getEditingModeActions() {
-
         //SAVE BUTTON
         Button saveButton = new Button("Save", e -> {
-            //TODO:Add Validator
-            DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.updateProduct(
-                    this.productGrid.getEditor().getItem().getId(),
-                    Product.create(
-                            this.nameTextField.getValue(),
-                            this.priceNumberField.getValue(),
-                            this.amountIntegerField.getValue(),
-                            this.imageUrlTextField.getValue()));
-            Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
-            this.productGridEditor.save();
+            try {
+                DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.updateProduct(
+                        this.productGrid.getEditor().getItem().getId(),
+                        Product.create(
+                                this.nameTextField.getValue(),
+                                this.priceNumberField.getValue(),
+                                this.amountIntegerField.getValue(),
+                                this.imageUrlTextField.getValue()));
+                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
+                this.productGridEditor.save();
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+                Notification.show("ONE OR MORE OF THE VALUES OF THE PRODUCT ARE EMPTY");
+            }
         });
 
         //CANCEL BUTTON
