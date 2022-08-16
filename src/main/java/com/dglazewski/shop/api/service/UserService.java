@@ -1,15 +1,15 @@
 package com.dglazewski.shop.api.service;
 
 
-import com.dglazewski.shop.api.dto.UserDto;
-import com.dglazewski.shop.api.dto.creator.UserCreatorDto;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.entity.User;
 
 public interface UserService {
-    UserDto addUser(UserCreatorDto user);
+    DataBaseStatusResponse<User>createUser(User user);
 
-    UserDto updateUser(Long id, UserCreatorDto user);
+    DataBaseStatusResponse<User> updateUser(Long id, User user);
 
     void deleteUser(Long id);
 
-    UserDto getUser(Long id);
+    DataBaseStatusResponse<User> getUser(Long id);
 }

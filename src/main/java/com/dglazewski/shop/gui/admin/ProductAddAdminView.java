@@ -3,6 +3,7 @@ package com.dglazewski.shop.gui.admin;
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.gui.AppLayoutDrawer;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -19,9 +20,9 @@ import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route(value="admin/product/add", layout = AppLayoutDrawerAdmin.class)
+@Route(value = "admin/product/add", layout = AppLayoutDrawer.class)
 @PageTitle("Add product | ADMIN")
-public class ProductAddView extends VerticalLayout {
+public class ProductAddAdminView extends VerticalLayout {
 
     //SERVICE
     private final ProductService productService;
@@ -42,7 +43,7 @@ public class ProductAddView extends VerticalLayout {
     //BINDER
     private final Binder<Product> binder;
 
-    public ProductAddView(ProductService productService) {
+    public ProductAddAdminView(ProductService productService) {
         //SERVICE
         this.productService = productService;
 

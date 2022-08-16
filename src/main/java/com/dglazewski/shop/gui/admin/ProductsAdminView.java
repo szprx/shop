@@ -3,6 +3,7 @@ package com.dglazewski.shop.gui.admin;
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.gui.AppLayoutDrawer;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -29,9 +30,9 @@ import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-@Route(value = "admin/product/all", layout = AppLayoutDrawerAdmin.class)
+@Route(value = "admin/product/all", layout = AppLayoutDrawer.class)
 @PageTitle("All products | ADMIN")
-public class ProductsListView extends VerticalLayout {
+public class ProductsAdminView extends VerticalLayout {
 
     //SERVICE
     private final ProductService productService;
@@ -64,7 +65,7 @@ public class ProductsListView extends VerticalLayout {
     private Grid.Column<Product> editColumn;
 
 
-    public ProductsListView(ProductService productService) {
+    public ProductsAdminView(ProductService productService) {
 
         //SERVICE
         this.productService = productService;

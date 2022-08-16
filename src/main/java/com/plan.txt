@@ -55,3 +55,38 @@ dzialajacy styles.css
 //        nStyle.set("border","2px solid red");
 //        nStyle.set("font-size","20em!important");
 TODO: dodac responsywnosc https://vaadin.com/directory/component/responsive-layout/overview
+
+TODO:DASHBOARD FOR ADMIN
+adding products +
+list of products +
+orders
+    -manage orders
+Log out ONLY ICON
+
+TODO:DASHBOARD FOR LOGGED USER
+All products +
+Shopping card
+Notifications maybe about new products?
+Order history
+My profile
+    -my data
+    -settings
+Log out ONLY ICON
+
+TODO:DASHBOARD FOR GUEST
+All products - it will be same as for logged user +
+but every time U click add to shopping card it checks if You're logged in
+create account
+
+ORDER OF ICONS
+home+
+all products - user guest+
+all products with management- admin +
+adding products +
+orders +
+Shopping card +
+Notifications maybe about new products?+
+Order history+
+My profile+
+create account+
+Log out ONLY ICON

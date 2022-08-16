@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui.guest;
+package com.dglazewski.shop.gui;
 
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.login.LoginForm;
@@ -8,9 +8,10 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
-@Route("login")
-@PageTitle("Login | Vaadin")
-@CssImport("./styles/styles.css")
+
+
+@Route(value = "login", layout = AppLayoutDrawer.class)
+@PageTitle("Login")
 public class LoginView extends VerticalLayout {
 
     public LoginView() {

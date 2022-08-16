@@ -1,12 +1,18 @@
 package com.dglazewski.shop.gui.user;
 
-import com.dglazewski.shop.gui.guest.AppLayoutDrawerUser;
+import com.dglazewski.shop.api.entity.Order;
+import com.dglazewski.shop.api.entity.Product;
+import com.dglazewski.shop.api.service.CustomerService;
+import com.dglazewski.shop.gui.AppLayoutDrawer;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.avatar.Avatar;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -14,13 +20,18 @@ import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.virtuallist.VirtualList;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.dom.ElementFactory;
+import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "myAccount", layout = AppLayoutDrawerUser.class)
-@PageTitle("My account")
+import java.util.List;
+
+@Route(value = "myAccount", layout = AppLayoutDrawer.class)
+@PageTitle("My account | USER")
 public class UserAccountView extends Div {
 
     private final Tab profile;
@@ -28,8 +39,39 @@ public class UserAccountView extends Div {
     private final Tab notifications;
 
     private final VerticalLayout content;
+    private final CustomerService customerService;
 
-    public UserAccountView() {
+    //
+    private final ComponentRenderer<Component, Product> personCardRenderer = new ComponentRenderer<>(product -> {
+        HorizontalLayout cardLayout = new HorizontalLayout();
+        cardLayout.setMargin(true);
+
+        Avatar avatar = new Avatar(product.getName(), product.getImageUrl());
+        avatar.setHeight("64px");
+        avatar.setWidth("64px");
+
+        VerticalLayout infoLayout = new VerticalLayout();
+        infoLayout.setSpacing(false);
+        infoLayout.setPadding(false);
+        infoLayout.getElement().appendChild(ElementFactory.createStrong(product.getName()));
+        infoLayout.add(new Div(new Text(String.valueOf(product.getPrice()))));
+
+        VerticalLayout detailsLayout = new VerticalLayout();
+        detailsLayout.setSpacing(false);
+        detailsLayout.setPadding(false);
+        detailsLayout.add(new Div(new Text(product.getName())));
+        detailsLayout.add(new Div(new Text(String.valueOf(product.getAmount()))));
+        infoLayout.add(new Details("More information", detailsLayout));
+
+        cardLayout.add(avatar, infoLayout);
+        return cardLayout;
+    });
+
+
+    //
+
+    public UserAccountView(CustomerService customerService) {
+        this.customerService = customerService;
         profile = new Tab(
                 VaadinIcon.USER.create(),
                 new Span("Profile")
@@ -82,11 +124,10 @@ public class UserAccountView extends Div {
 
         Div profileDataDiv = new Div();
         Div profileOrderHistory = new Div();
-        Div somethingDiv = new Div();
 
         HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setPadding(true);
-        horizontalLayout.add(profileDataDiv,profileOrderHistory,somethingDiv);
+        horizontalLayout.add(profileDataDiv, profileOrderHistory);
 
         div.add(new Paragraph("This is the profile tab"));
 
@@ -94,13 +135,13 @@ public class UserAccountView extends Div {
         //TODO dodac przekzywanie kokretnego usera badz jego id aby pobierac jego szczegolowe dane
 
         TextField firstName = new TextField("First name");
-        firstName.setEnabled(false);
+        firstName.setReadOnly(true);
         firstName.setValue("Jan");
         TextField lastName = new TextField("Last name");
-        lastName.setEnabled(false);
+        lastName.setReadOnly(true);
         lastName.setValue("Kowalski");
         EmailField email = new EmailField("Email");
-        email.setEnabled(false);
+        email.setReadOnly(true);
         email.setValue("jan_kowalski@gmail.com");
 
         //change password raczej w oddzielnej karcie
@@ -122,7 +163,14 @@ public class UserAccountView extends Div {
         formLayout.setColspan(firstName, 2);
 
         profileDataDiv.add(formLayout);
-        profileOrderHistory.add(new Paragraph("jesli bedzie trzeba zrobie to co bedzie trzeba "));
+        profileOrderHistory.add(new Paragraph("Order history"));
+
+//TODO: pass actual id using idk cookie?
+        List<Order> orders = customerService.getCustomer(1L).getEntity().getOrders();
+        VirtualList<Order> list = new VirtualList<>();
+        list.setItems(orders);
+        list.setRenderer((ValueProvider<Order, String>) personCardRenderer);
+        profileOrderHistory.add(list);
 
         div.add(horizontalLayout);
 

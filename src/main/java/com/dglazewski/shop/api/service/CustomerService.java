@@ -1,15 +1,15 @@
 package com.dglazewski.shop.api.service;
 
-import com.dglazewski.shop.api.dto.CustomerDto;
-import com.dglazewski.shop.api.dto.creator.CustomerCreatorDto;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.entity.Customer;
 
 public interface CustomerService {
-    CustomerDto addCustomer(CustomerCreatorDto newCustomer);//zakladanie konta aczkolwiek przy dodawaniu usera juz to bedzie obslugiwane
+    DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer);//zakladanie konta aczkolwiek przy dodawaniu usera juz to bedzie obslugiwane
 
-    CustomerDto updateCustomer(Long id, CustomerCreatorDto updatedCustomer);//edycja konta gdzie cascade powinno automatycznie zaktualizowac reszte
+    DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer updatedCustomer);//edycja konta gdzie cascade powinno automatycznie zaktualizowac reszte
 
-    CustomerDto getCustomer(Long id);//wyswietlanie danych i dane do zamowien
+    DataBaseStatusResponse<Customer> getCustomer(Long id);//wyswietlanie danych i dane do zamowien
 
-    void deleteCustomer(Long id);//usuwanie konta bedzie sie dzialo przez endpoint usera
+    DataBaseStatusResponse<Customer> deleteCustomer(Long id);//usuwanie konta bedzie sie dzialo przez endpoint usera
 
 }

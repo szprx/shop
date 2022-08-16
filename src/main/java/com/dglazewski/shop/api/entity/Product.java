@@ -2,6 +2,7 @@ package com.dglazewski.shop.api.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
@@ -29,6 +31,20 @@ public class Product {
     private String name;
     @Column(name = "price")
     private double price;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.price, price) == 0 && amount == product.amount && name.equals(product.name) && imageUrl.equals(product.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price, amount, imageUrl);
+    }
+
     @Column(name = "amount")
     private int amount;
     @Column(name = "image_url")

@@ -56,6 +56,8 @@ public class ProductServiceImpl implements ProductService {
                 })
                 .orElse(new DataBaseStatusResponse<>(
                         Status.RECORD_ALREADY_EXIST));
+
+        //TODO: check if this response is valid
     }
 
     @Override
@@ -65,7 +67,9 @@ public class ProductServiceImpl implements ProductService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
         }
-        return new DataBaseStatusResponse<>(Status.RECORD_RETRIEVED_SUCCESSFULLY, product.get());
+        return new DataBaseStatusResponse<>(
+                Status.RECORD_RETRIEVED_SUCCESSFULLY,
+                product.get());
     }
 
     @Override

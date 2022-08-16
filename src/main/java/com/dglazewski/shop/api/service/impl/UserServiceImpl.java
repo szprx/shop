@@ -1,7 +1,7 @@
 package com.dglazewski.shop.api.service.impl;
 
-import com.dglazewski.shop.api.dto.UserDto;
-import com.dglazewski.shop.api.dto.creator.UserCreatorDto;
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
+import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
@@ -13,14 +13,13 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-
     @Override
-    public UserDto addUser(UserCreatorDto user) {
+    public DataBaseStatusResponse<User> createUser(User user) {
         return null;
     }
 
     @Override
-    public UserDto updateUser(Long id, UserCreatorDto user) {
+    public DataBaseStatusResponse<User> updateUser(Long id, User user) {
         return null;
     }
 
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(Long id) {
+    public DataBaseStatusResponse<User> getUser(Long id) {
         return null;
     }
 }

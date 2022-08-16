@@ -31,8 +31,8 @@ public class Customer {
 
     @Column(name = "name")
     private String name;
-    @Column(name = "second_name")
-    private String secondName;
+    @Column(name = "last_name")
+    private String lastName;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
@@ -41,11 +41,33 @@ public class Customer {
     @Column(name = "orders")
     private List<Order> orders = new ArrayList<>();
 
-    public static Customer create(String name, String secondName, User user) {
+    public static Customer create(String name, String lastName, User user) {
         return Customer.builder()
                 .name(name)
-                .secondName(secondName)
+                .lastName(lastName)
                 .user(user)
                 .build();
+    }
+
+    public Customer updateWith(Customer customer) {
+        return Customer.builder()
+                .id(this.id)
+                .name(customer.getName())
+                .lastName(customer.getLastName())
+                .user(this.user)
+                .orders(customer.getOrders())
+                .build();
+    }
+
+    public boolean isValid() {
+        boolean isValid = true;
+        if (this.name == null || this.name.trim().equals("")) {
+            isValid = false;
+        }
+        if (this.lastName == null || this.lastName.trim().equals("")) {
+            isValid = false;
+        }
+//TODO: ADD USER VALIDATION IF NEEDED
+        return isValid;
     }
 }
