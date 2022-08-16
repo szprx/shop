@@ -36,6 +36,7 @@ public class ProductsAdminView extends VerticalLayout {
 
     //SERVICE
     private final ProductService productService;
+    private final List<Product> products;
 
     //FIELDS
     private final TextField searchField;
@@ -69,7 +70,7 @@ public class ProductsAdminView extends VerticalLayout {
 
         //SERVICE
         this.productService = productService;
-        List<Product> products = this.productService.getAllProducts().getEntity();
+        this.products = this.productService.getAllProducts().getEntity();
 
         //FIELDS
         this.searchField = new TextField();
@@ -216,8 +217,7 @@ public class ProductsAdminView extends VerticalLayout {
         getThemeList().add("spacing-s");
 
         productGrid.setWidthFull();
-        productGrid.setHeight("1000px");
-
+        productGrid.setHeight("830px");
         Style style = this.getElement().getStyle();
 //        style.set("margin", "10px");
     }
