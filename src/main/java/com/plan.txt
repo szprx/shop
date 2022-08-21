@@ -90,3 +90,5 @@ Order history+
 My profile+
 create account+
 Log out ONLY ICON
+
+TODO: make update operations not allowed creating duplicates

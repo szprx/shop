@@ -101,7 +101,7 @@ public class AppLayoutDrawer extends AppLayout {
 
 
         if (this.roleEnum == "ROLE_CUSTOMER") {
-            icon = VaadinIcon.CART.create();//shoping card
+            icon = VaadinIcon.CART.create();//shopping card
             setStyles(icon);
             link = new RouterLink();
             link.add(icon, new Span("Shopping Card"));
@@ -155,19 +155,17 @@ public class AppLayoutDrawer extends AppLayout {
             tabs.add(new Tab(link));
         }
         if (this.roleEnum != "ROLE_ANONYMOUS") {
+            Tab logOutTab = new Tab();
             icon = VaadinIcon.EXIT.create();//log out
-            icon.addClickListener(iconClickEvent -> {
-                this.securityService.logout();
-                //TODO: add logging out
-            });
             setStyles(icon);
             link = new RouterLink();
             link.add(icon, new Span("Log out"));
-//            link.setRoute(LoginView.class);
+            link.setRoute(HomeView.class);
             link.setTabIndex(-1);
-            tabs.add(new Tab(link));
+            logOutTab.add(link);
+            logOutTab.getElement().addEventListener("click", event -> this.securityService.logout());
+            tabs.add(logOutTab);
         }
-
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         return tabs;

@@ -35,6 +35,8 @@ public class User {
     @Column(name = "role")
     private RoleEnum role;
 
+
+    //TODO add email verify https://www.codejava.net/frameworks/spring-boot/email-verification-example
     public static User create(String email, String password, RoleEnum role) {
         return User.builder()
                 .email(email)

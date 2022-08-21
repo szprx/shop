@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
                             updatedProduct);
                 })
                 .orElse(new DataBaseStatusResponse<>(
-                        Status.RECORD_ALREADY_EXIST));
+                        Status.UNKNOWN_DATABASE_ERROR));
 
         //TODO: check if this response is valid
     }
@@ -75,5 +75,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public DataBaseStatusResponse<List<Product>> getAllProducts() {
         return new DataBaseStatusResponse<>(Status.RECORD_RETRIEVED_SUCCESSFULLY, productRepository.findAll());
+
     }
 }
