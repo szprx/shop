@@ -20,6 +20,7 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Route(value = "register", layout = AppLayoutDrawer.class)
 @PageTitle("Register")
@@ -30,10 +31,11 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     private final String role = SecurityService.getCurrentUserRole();
     private final CustomerService customerService;
 
+
     //FIELDS
     private final TextField firstName;
     private final TextField lastName;
-    private final TextField username;
+    private final TextField emial;
     private final PasswordField password;
     private final PasswordField confirmPassword;
 
@@ -51,7 +53,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         //FIELDS
         this.firstName = new TextField("First name");
         this.lastName = new TextField("Last name");
-        this.username = new TextField("Username");
+        this.emial = new TextField("Email");
         this.password = new PasswordField("Password");
         this.confirmPassword = new PasswordField("Confirm password");
 
@@ -64,14 +66,12 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
 
         add(this.registerFormLayout,
                 new HorizontalLayout(registerButton));
-
-
     }
 
     private void configRegisterFormLayout() {
         this.registerFormLayout.add(
                 firstName, lastName,
-                username,
+                emial,
                 password, confirmPassword
         );
         this.registerFormLayout.setResponsiveSteps(
@@ -81,20 +81,19 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 new FormLayout.ResponsiveStep("500px", 2)
         );
         // Stretch the username field over 2 columns
-        this.registerFormLayout.setColspan(username, 2);
+        this.registerFormLayout.setColspan(emial, 2);
     }
 
     private void configRegisterButton() {
         this.registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.registerButton.addClickListener(buttonClickEvent -> {
 
-
             try {
                 DataBaseStatusResponse<Customer> dataBaseStatusResponse = this.customerService.addCustomer(
                         Customer.create(
                                 this.firstName.getValue(),
                                 this.lastName.getValue(),
-                                this.username.getValue(),
+                                this.emial.getValue(),
                                 this.password.getValue()));
                 Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             } catch (NullPointerException ex) {

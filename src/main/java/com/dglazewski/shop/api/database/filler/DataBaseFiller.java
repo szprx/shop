@@ -10,7 +10,6 @@ import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,7 +19,6 @@ public class DataBaseFiller {
     private ProductService productService;
     private CustomerService customerService;
     private UserService userService;
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Bean
     public CommandLineRunner commandLineRunner() {
@@ -38,9 +36,9 @@ public class DataBaseFiller {
             productService.addProduct(Product.create("garapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
             productService.addProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
-            userService.addUser(User.create("admin", passwordEncoder.encode("admin"), RoleEnum.ROLE_ADMIN));
+            userService.addUser(User.create("admin", "admin", RoleEnum.ROLE_ADMIN));
 
-            customerService.addCustomer(Customer.create("Jan","Kowalski","customer",passwordEncoder.encode("customer")));
+            customerService.addCustomer(Customer.create("Jan", "Kowalski", "customer", "customer"));
         };
     }
 }

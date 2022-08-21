@@ -6,6 +6,7 @@ import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,7 +15,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public DataBaseStatusResponse<User> addUser(User newUser) {
@@ -29,7 +31,10 @@ public class UserServiceImpl implements UserService {
         }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
-                userRepository.save(newUser)
+                userRepository.save(User.create(
+                        newUser.getEmail(),
+                        passwordEncoder.encode(newUser.getPassword()),
+                        newUser.getRole()))
         );
     }
 
@@ -47,7 +52,10 @@ public class UserServiceImpl implements UserService {
         }
         return user
                 .map(oldUser -> {
-                    User updatedUser = oldUser.updateWith(newUser);
+                    User updatedUser = oldUser.updateWith(User.create(
+                            newUser.getEmail(),
+                            passwordEncoder.encode(newUser.getPassword()),
+                            newUser.getRole()));
                     userRepository.save(updatedUser);
                     return new DataBaseStatusResponse<>(
                             Status.RECORD_UPDATED_SUCCESSFULLY,

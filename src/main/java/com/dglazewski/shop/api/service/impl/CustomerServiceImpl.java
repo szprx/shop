@@ -8,6 +8,7 @@ import com.dglazewski.shop.api.repository.CustomerRepository;
 import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.CustomerService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerRepository customerRepository;
     private UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     @Override
@@ -33,7 +35,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
-                customerRepository.save(newCustomer));
+                customerRepository.save(Customer.create(
+                        newCustomer.getName(),
+                        newCustomer.getLastName(),
+                        newCustomer.getUser().getEmail(),
+                        passwordEncoder.encode(newCustomer.getUser().getPassword()))));
     }
 
     @Override
