@@ -20,7 +20,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Route(value = "register", layout = AppLayoutDrawer.class)
 @PageTitle("Register")
@@ -35,7 +34,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     //FIELDS
     private final TextField firstName;
     private final TextField lastName;
-    private final TextField emial;
+    private final TextField email;
     private final PasswordField password;
     private final PasswordField confirmPassword;
 
@@ -53,7 +52,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         //FIELDS
         this.firstName = new TextField("First name");
         this.lastName = new TextField("Last name");
-        this.emial = new TextField("Email");
+        this.email = new TextField("Email");
         this.password = new PasswordField("Password");
         this.confirmPassword = new PasswordField("Confirm password");
 
@@ -71,7 +70,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     private void configRegisterFormLayout() {
         this.registerFormLayout.add(
                 firstName, lastName,
-                emial,
+                email,
                 password, confirmPassword
         );
         this.registerFormLayout.setResponsiveSteps(
@@ -81,7 +80,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 new FormLayout.ResponsiveStep("500px", 2)
         );
         // Stretch the username field over 2 columns
-        this.registerFormLayout.setColspan(emial, 2);
+        this.registerFormLayout.setColspan(email, 2);
     }
 
     private void configRegisterButton() {
@@ -93,7 +92,7 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                         Customer.create(
                                 this.firstName.getValue(),
                                 this.lastName.getValue(),
-                                this.emial.getValue(),
+                                this.email.getValue(),
                                 this.password.getValue()));
                 Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             } catch (NullPointerException ex) {
