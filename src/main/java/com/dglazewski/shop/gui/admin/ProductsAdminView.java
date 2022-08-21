@@ -2,6 +2,7 @@ package com.dglazewski.shop.gui.admin;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
+import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.ProductService;
 import com.dglazewski.shop.gui.AppLayoutDrawer;
 import com.vaadin.flow.component.Unit;
@@ -47,8 +48,6 @@ public class ProductsAdminView extends VerticalLayout {
     private final NumberField priceNumberField;
     private final IntegerField amountIntegerField;
 
-    //BUTTON
-    private final Button addButton;
 
     //GRID
     private final Grid<Product> productGrid;
@@ -90,10 +89,6 @@ public class ProductsAdminView extends VerticalLayout {
         this.imageUrlTextField = new TextField();
         this.imageUrlTextField.setWidthFull();
 
-        //BUTTON
-        this.addButton = new Button("Add product");
-        configAddButton();
-
         //GRID
         this.productGrid = new Grid<>(Product.class, false);
         this.dataView = this.productGrid.setItems(products);
@@ -114,11 +109,12 @@ public class ProductsAdminView extends VerticalLayout {
         configSearching();
         configCss();
 
-        add(new HorizontalLayout(this.searchField, this.addButton));
+        add(new HorizontalLayout(this.searchField));
         add(this.productGrid);
     }
 
     private void configSearching() {
+        this.searchField.setWidth("600px");
         this.searchField.setPrefixComponent(new Icon(VaadinIcon.SEARCH));
         this.searchField.setValueChangeMode(ValueChangeMode.EAGER);
         this.searchField.addValueChangeListener(e -> this.dataView.refreshAll());
@@ -149,9 +145,10 @@ public class ProductsAdminView extends VerticalLayout {
         this.editColumn = this.productGrid.addComponentColumn(product -> {
             Button editButton = new Button("Edit");
             editButton.addClickListener(e -> {
-                if (this.productGridEditor.isOpen())
+                if (this.productGridEditor.isOpen()) {
                     this.productGridEditor.cancel();
-                this.productGrid.getEditor().editItem(product);
+                }
+                this.productGridEditor.editItem(product);
             });
             return editButton;
         }).setWidth("220px").setFlexGrow(0).setTextAlign(ColumnTextAlign.CENTER);
@@ -187,14 +184,17 @@ public class ProductsAdminView extends VerticalLayout {
         Button saveButton = new Button("Save", e -> {
             try {
                 DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.updateProduct(
-                        this.productGrid.getEditor().getItem().getId(),
+                        this.productGridEditor.getItem().getId(),
                         Product.create(
                                 this.nameTextField.getValue(),
                                 this.priceNumberField.getValue(),
                                 this.amountIntegerField.getValue(),
                                 this.imageUrlTextField.getValue()));
                 Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
-                this.productGridEditor.save();
+                if (dataBaseStatusResponse.getStatus().compareTo(Status.RECORD_UPDATED_SUCCESSFULLY) == 0) {
+                    this.productGridEditor.save();
+                }
+                this.productGrid.getDataProvider().refreshAll();
             } catch (NullPointerException ex) {
                 ex.printStackTrace();
                 Notification.show("ONE OR MORE OF THE VALUES OF THE PRODUCT ARE EMPTY");
@@ -222,12 +222,6 @@ public class ProductsAdminView extends VerticalLayout {
         productGrid.setHeight("830px");
         Style style = this.getElement().getStyle();
 //        style.set("margin", "10px");
-    }
-
-    private void configAddButton() {
-        this.addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        this.addButton.addClickListener(buttonClickEvent -> this.addButton.getUI().ifPresent(ui ->
-                ui.navigate("admin/product/add")));
     }
 
     private boolean matchesTerm(String value, String searchTerm) {

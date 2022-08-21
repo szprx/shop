@@ -1,7 +1,9 @@
 package com.dglazewski.shop.api.database.filler;
 
+import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.entity.User;
+import com.dglazewski.shop.api.enums.RoleEnum;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.api.service.ProductService;
 import com.dglazewski.shop.api.service.UserService;
@@ -36,13 +38,9 @@ public class DataBaseFiller {
             productService.addProduct(Product.create("garapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
             productService.addProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
-            userService.addUser(User.create("admin", passwordEncoder.encode("admin")));
-            userService.addUser(User.create("customer", passwordEncoder.encode("customer")));
-//            userRepository.save(User.create("adam@wp.pl","haslo",RoleEnum.ADMIN));
-//            userRepository.save(User.create("lgha.wp.pl","apss",RoleEnum.ADMIN));
-//            userRepository.save(User.create("asasd.wp.pl","aps3434s",RoleEnum.CUSTOMER));
-//            customerRepository.save(Customer.create("Daro","NBA",userRepository.findByEmail("asasd.wp.pl")));
+            userService.addUser(User.create("admin", passwordEncoder.encode("admin"), RoleEnum.ROLE_ADMIN));
 
+            customerService.addCustomer(Customer.create("Jan","Kowalski","customer",passwordEncoder.encode("customer")));
         };
     }
 }

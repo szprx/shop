@@ -35,11 +35,11 @@ public class User {
     @Column(name = "role")
     private RoleEnum role;
 
-    public static User create(String email, String password) {
+    public static User create(String email, String password, RoleEnum role) {
         return User.builder()
                 .email(email)
                 .password(password)
-                .role(RoleEnum.ROLE_ADMIN)
+                .role(role)
                 .build();
     }
 

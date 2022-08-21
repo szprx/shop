@@ -53,26 +53,20 @@ public class ProductAddAdminView extends VerticalLayout {
         //FIELDS
         this.nameTextField = new TextField("name");
         configNameTextField();
-
         this.priceNumberField = new NumberField("price");
         configPriceNumberField();
-
         this.amountIntegerField = new IntegerField("amount");
         configAmountIntegerField();
-
         this.imageUrlTextField = new TextField("image url");
         configImageUrlTextField();
-
         this.addingFromLayout = new FormLayout();
         configAddingFromLayout();
 
         //BUTTON
         this.addProductButton = new Button("Add");
         configAddProductButton();
-
         this.clearButton = new Button("Clear");
         configClearButton();
-
         this.cancelButton = new Button("Cancel");
         configCancelButton();
 

@@ -1,28 +1,29 @@
 package com.dglazewski.shop.gui;
 
+import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
-import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @Route(value = "login", layout = AppLayoutDrawer.class)
 @PageTitle("Login")
 @AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
-    private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    private final String roleEnum = auth.getAuthorities().stream().toList().get(0).toString();
+    //SERVICE
+    private final String role = SecurityService.getCurrentUserRole();
 
     public LoginView() {
         addClassName("login-view");
+        //TODO change to LoginOverlay
+        // https://vaadin.com/docs/latest/components/login#validation
+        // https://vaadin.com/api/platform/23.1.6/com/vaadin/flow/component/login/LoginOverlay.html
 
         getStyle()
                 .set("background-color", "var(--lumo-contrast-5pct)")
@@ -65,9 +66,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         //https://vaadin.com/docs/latest/tutorial/login-and-authentication
 
     }
+
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (!"ROLE_ANONYMOUS".equals(roleEnum)) {
+        if (!"ROLE_ANONYMOUS".equals(role)) {
             beforeEnterEvent.forwardTo(HomeView.class);
         }
     }

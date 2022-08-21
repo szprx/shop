@@ -2,8 +2,10 @@ package com.dglazewski.shop.api.service.impl;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
+import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.repository.CustomerRepository;
+import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,13 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
     private CustomerRepository customerRepository;
+    private UserRepository userRepository;
 
 
     @Override
     public DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
-        Optional<Customer> customer = customerRepository.findByName(newCustomer.getName());
-        if (customer.isPresent()) {
+        Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
+        if (user.isPresent()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
         }
@@ -35,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer newCustomer) {
+        //TODO add checking if used email is occupied
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isEmpty()) {
             return new DataBaseStatusResponse<>(

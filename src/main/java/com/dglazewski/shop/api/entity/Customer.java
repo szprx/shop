@@ -1,5 +1,6 @@
 package com.dglazewski.shop.api.entity;
 
+import com.dglazewski.shop.api.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,11 +42,11 @@ public class Customer {
     @Column(name = "orders")
     private List<Order> orders = new ArrayList<>();
 
-    public static Customer create(String name, String lastName, User user) {
+    public static Customer create(String name, String lastName, String email, String password) {
         return Customer.builder()
                 .name(name)
                 .lastName(lastName)
-                .user(user)
+                .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER))
                 .build();
     }
 
@@ -67,7 +68,6 @@ public class Customer {
         if (this.lastName == null || this.lastName.trim().equals("")) {
             isValid = false;
         }
-//TODO: ADD USER VALIDATION IF NEEDED
-        return isValid;
+        return this.user.isValid();
     }
 }
