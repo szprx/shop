@@ -1,7 +1,7 @@
 package com.dglazewski.shop.gui;
 
 
-import com.dglazewski.shop.api.enums.RoleEnum;
+import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.gui.admin.OrdersAdminView;
 import com.dglazewski.shop.gui.admin.ProductAddAdminView;
 import com.dglazewski.shop.gui.admin.ProductsAdminView;
@@ -19,15 +19,23 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class AppLayoutDrawer extends AppLayout {
 
-    private RoleEnum roleEnum = RoleEnum.ADMIN;
+    private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    public AppLayoutDrawer() {
+    private String roleEnum = auth.getAuthorities().stream().toList().get(0).toString();
+
+    private SecurityService securityService;
+
+
+    public AppLayoutDrawer(SecurityService securityService) {
+        this.securityService = securityService;
         DrawerToggle toggle = new DrawerToggle();
 
-        H1 title = new H1("Spring Vaadin Shop Online");
+        H1 title = new H1("Spring Vaadin Shop Online " + roleEnum);
         title.getStyle()
                 .set("font-size", "var(--lumo-font-size-l)")
                 .set("margin", "0");
@@ -52,8 +60,8 @@ public class AppLayoutDrawer extends AppLayout {
         setStyles(icon);
         link = new RouterLink();
         link.add(icon, new Span("Home page"));
-        link.setRoute(HomePage.class);
-        link.setTabIndex(-1);
+        link.setRoute(HomeView.class);
+        link.setTabIndex(1);
         tabs.add(new Tab(link));
 
 
@@ -65,7 +73,7 @@ public class AppLayoutDrawer extends AppLayout {
         link.setTabIndex(-1);
         tabs.add(new Tab(link));
 
-        if (this.roleEnum == RoleEnum.ADMIN) {
+        if (this.roleEnum == "ROLE_ADMIN") {
             icon = VaadinIcon.EDIT.create();//manage product
             setStyles(icon);
             link = new RouterLink();
@@ -92,7 +100,7 @@ public class AppLayoutDrawer extends AppLayout {
         }
 
 
-        if (this.roleEnum == RoleEnum.CUSTOMER) {
+        if (this.roleEnum == "ROLE_CUSTOMER") {
             icon = VaadinIcon.CART.create();//shoping card
             setStyles(icon);
             link = new RouterLink();
@@ -127,20 +135,18 @@ public class AppLayoutDrawer extends AppLayout {
             tabs.add(new Tab(link));
         }
 
-        if (this.roleEnum == RoleEnum.ADMIN || this.roleEnum == RoleEnum.CUSTOMER) {
-            icon = VaadinIcon.EXIT.create();//log out
-//        icon.addClickListener(iconClickEvent -> {
-//            //TODO: add logging out
-//        });
+        if (this.roleEnum == "ROLE_ANONYMOUS") {
+
+            icon = VaadinIcon.CLIPBOARD_USER.create();//login
             setStyles(icon);
             link = new RouterLink();
-            link.add(icon, new Span("Log out"));
+            link.add(icon, new Span("Login"));
             link.setRoute(LoginView.class);
             link.setTabIndex(-1);
             tabs.add(new Tab(link));
-        }
-        if (this.roleEnum == RoleEnum.GUEST) {
-            icon = VaadinIcon.CLIPBOARD_USER.create();//register
+
+
+            icon = VaadinIcon.CLIPBOARD_TEXT.create();//register
             setStyles(icon);
             link = new RouterLink();
             link.add(icon, new Span("Register"));
@@ -148,6 +154,20 @@ public class AppLayoutDrawer extends AppLayout {
             link.setTabIndex(-1);
             tabs.add(new Tab(link));
         }
+        if (this.roleEnum != "ROLE_ANONYMOUS") {
+            icon = VaadinIcon.EXIT.create();//log out
+            icon.addClickListener(iconClickEvent -> {
+                this.securityService.logout();
+                //TODO: add logging out
+            });
+            setStyles(icon);
+            link = new RouterLink();
+            link.add(icon, new Span("Log out"));
+//            link.setRoute(LoginView.class);
+            link.setTabIndex(-1);
+            tabs.add(new Tab(link));
+        }
+
 
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         return tabs;

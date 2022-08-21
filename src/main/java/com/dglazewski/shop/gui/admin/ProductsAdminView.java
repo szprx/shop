@@ -28,10 +28,12 @@ import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @Route(value = "admin/product/all", layout = AppLayoutDrawer.class)
 @PageTitle("All products | ADMIN")
+@RolesAllowed("ADMIN")
 public class ProductsAdminView extends VerticalLayout {
 
     //SERVICE

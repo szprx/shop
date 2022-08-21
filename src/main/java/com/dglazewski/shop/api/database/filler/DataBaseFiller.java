@@ -1,10 +1,14 @@
 package com.dglazewski.shop.api.database.filler;
 
 import com.dglazewski.shop.api.entity.Product;
+import com.dglazewski.shop.api.entity.User;
+import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,6 +16,9 @@ import org.springframework.stereotype.Component;
 public class DataBaseFiller {
 
     private ProductService productService;
+    private CustomerService customerService;
+    private UserService userService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Bean
     public CommandLineRunner commandLineRunner() {
@@ -24,8 +31,13 @@ public class DataBaseFiller {
             productService.addProduct(Product.create("peach", 0.82, 21, "https://static.libertyprim.com/files/familles/peche-large.jpg?1574630286"));
             productService.addProduct(Product.create("cherry", 0.82, 21, "https://tradevalley.com/media/sellers/335/products/cherry.jpg"));
             productService.addProduct(Product.create("grapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
+            productService.addProduct(Product.create("gr2apes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
+            productService.addProduct(Product.create("grsdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
+            productService.addProduct(Product.create("garapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
+            productService.addProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
-
+            userService.addUser(User.create("admin", passwordEncoder.encode("admin")));
+            userService.addUser(User.create("customer", passwordEncoder.encode("customer")));
 //            userRepository.save(User.create("adam@wp.pl","haslo",RoleEnum.ADMIN));
 //            userRepository.save(User.create("lgha.wp.pl","apss",RoleEnum.ADMIN));
 //            userRepository.save(User.create("asasd.wp.pl","aps3434s",RoleEnum.CUSTOMER));
@@ -33,5 +45,4 @@ public class DataBaseFiller {
 
         };
     }
-
 }

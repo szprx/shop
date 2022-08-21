@@ -39,8 +39,28 @@ public class User {
         return User.builder()
                 .email(email)
                 .password(password)
-                .role(RoleEnum.ADMIN)
+                .role(RoleEnum.ROLE_ADMIN)
                 .build();
     }
 
+    public boolean isValid() {
+        boolean isValid = true;
+        if (this.email == null || this.email.trim().equals("")) {
+            isValid = false;
+        }
+        if (this.password == null || this.password.trim().equals("")) {
+            isValid = false;
+        }
+        return isValid;
+    }
+
+    public User updateWith(User newUser) {
+        return User.builder()
+                .id(this.id)
+                .email(newUser.getEmail())
+                .password(newUser.getPassword())
+//                .role(newUser.getRole())
+                .role(this.role)
+                .build();
+    }
 }

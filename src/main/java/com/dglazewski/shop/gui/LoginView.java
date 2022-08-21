@@ -1,22 +1,37 @@
 package com.dglazewski.shop.gui;
 
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
+import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
-
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @Route(value = "login", layout = AppLayoutDrawer.class)
 @PageTitle("Login")
-public class LoginView extends VerticalLayout {
+@AnonymousAllowed
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
+    private Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+    private final String roleEnum = auth.getAuthorities().stream().toList().get(0).toString();
 
     public LoginView() {
         addClassName("login-view");
+
+        getStyle()
+                .set("background-color", "var(--lumo-contrast-5pct)")
+                .set("display", "flex")
+                .set("justify-content", "center")
+                .set("padding", "var(--lumo-space-l)");
+
         LoginI18n i18n = LoginI18n.createDefault();
+
 
         LoginI18n.Form loginI18nForm = i18n.getForm();
         loginI18nForm.setTitle("Hello user");
@@ -49,5 +64,11 @@ public class LoginView extends VerticalLayout {
         //security
         //https://vaadin.com/docs/latest/tutorial/login-and-authentication
 
+    }
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        if (!"ROLE_ANONYMOUS".equals(roleEnum)) {
+            beforeEnterEvent.forwardTo(HomeView.class);
+        }
     }
 }
