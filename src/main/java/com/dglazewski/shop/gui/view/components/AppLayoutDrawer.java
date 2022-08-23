@@ -1,15 +1,18 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.view.components;
 
 
 import com.dglazewski.shop.api.seciurity.SecurityService;
-import com.dglazewski.shop.gui.admin.OrdersAdminView;
-import com.dglazewski.shop.gui.admin.ProductAddAdminView;
-import com.dglazewski.shop.gui.admin.ProductsAdminView;
-import com.dglazewski.shop.gui.guest.RegisterView;
-import com.dglazewski.shop.gui.user.NotificationsView;
-import com.dglazewski.shop.gui.user.OrdersUserView;
-import com.dglazewski.shop.gui.user.ShoppingCardView;
-import com.dglazewski.shop.gui.user.UserAccountView;
+import com.dglazewski.shop.gui.view.everyone.HomeView;
+import com.dglazewski.shop.gui.view.everyone.LoginView;
+import com.dglazewski.shop.gui.view.everyone.ProductsView;
+import com.dglazewski.shop.gui.view.admin.OrdersAdminView;
+import com.dglazewski.shop.gui.view.admin.ProductAddAdminView;
+import com.dglazewski.shop.gui.view.admin.ProductsAdminView;
+import com.dglazewski.shop.gui.view.anonymous.RegisterView;
+import com.dglazewski.shop.gui.view.user.NotificationsView;
+import com.dglazewski.shop.gui.view.user.OrdersUserView;
+import com.dglazewski.shop.gui.view.user.ShoppingCardView;
+import com.dglazewski.shop.gui.view.user.UserAccountView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;

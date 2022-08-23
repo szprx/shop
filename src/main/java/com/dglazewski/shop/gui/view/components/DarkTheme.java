@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.view.components;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

@@ -1,10 +1,10 @@
-package com.dglazewski.shop.gui.admin;
+package com.dglazewski.shop.gui.view.admin;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.ProductService;
-import com.dglazewski.shop.gui.AppLayoutDrawer;
+import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

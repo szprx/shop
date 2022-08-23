@@ -84,4 +84,16 @@ public class CustomerServiceImpl implements CustomerService {
         return new DataBaseStatusResponse<>(
                 Status.RECORD_DELETED_SUCCESSFULLY);
     }
+
+    @Override
+    public DataBaseStatusResponse<Customer> getCustomer(String email) {
+        Optional<Customer> customer = customerRepository.findByUserEmail(email);
+        if (customer.isEmpty()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_DOESNT_EXIST);
+        }
+        return new DataBaseStatusResponse<>(
+                Status.RECORD_RETRIEVED_SUCCESSFULLY,
+                customer.get());
+    }
 }

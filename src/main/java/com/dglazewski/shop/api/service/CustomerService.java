@@ -12,4 +12,6 @@ public interface CustomerService {
 
     DataBaseStatusResponse<Customer> deleteCustomer(Long id);//usuwanie konta bedzie sie dzialo przez endpoint usera
 
+    DataBaseStatusResponse<Customer> getCustomer(String email);//usuwanie konta bedzie sie dzialo przez endpoint usera
+
 }

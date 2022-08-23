@@ -1,7 +1,8 @@
-package com.dglazewski.shop.gui.user;
+package com.dglazewski.shop.gui.view.user;
 
+import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
-import com.dglazewski.shop.gui.AppLayoutDrawer;
+import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
@@ -30,6 +31,7 @@ public class UserAccountView extends Div {
 
     private final VerticalLayout content;
     private final CustomerService customerService;
+    private final SecurityService securityService = new SecurityService();
 
 
     public UserAccountView(CustomerService customerService) {
@@ -92,7 +94,7 @@ public class UserAccountView extends Div {
 
         TextField firstName = new TextField("First name");
         firstName.setReadOnly(true);
-        firstName.setValue("Jan");
+        firstName.setValue(customerService.getCustomer(securityService.getAuthenticatedUser().getUsername()).getEntity().getName());
         TextField lastName = new TextField("Last name");
         lastName.setReadOnly(true);
         lastName.setValue("Kowalski");

@@ -1,7 +1,8 @@
-package com.dglazewski.shop.gui;
+package com.dglazewski.shop.gui.view.everyone;
 
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
@@ -43,6 +44,7 @@ public class ProductsView extends VerticalLayout {
         cardLayout.setMargin(true);
 
         Button addToShoppingCardButton = new Button("Add to card");
+        //TODO when amount is equal 0 change name of button to "notify about availablity"
         addToShoppingCardButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS);
         addToShoppingCardButton.addClickListener(buttonClickEvent -> {
             //TODO: add adding to shopping card a verification about
