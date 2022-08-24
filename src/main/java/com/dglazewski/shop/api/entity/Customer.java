@@ -48,7 +48,7 @@ public class Customer {
         return Customer.builder()
                 .name(name)
                 .lastName(lastName)
-                .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER))
+                .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER, false))
                 .build();
     }
 
@@ -60,16 +60,5 @@ public class Customer {
                 .user(this.user)
                 .orders(customer.getOrders())
                 .build();
-    }
-
-    public boolean isValid() {
-        boolean isValid = true;
-        if (this.name == null || this.name.trim().equals("")) {
-            isValid = false;
-        }
-        if (this.lastName == null || this.lastName.trim().equals("")) {
-            isValid = false;
-        }
-        return this.user.isValid();
     }
 }

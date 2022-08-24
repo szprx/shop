@@ -33,29 +33,24 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private RoleEnum role;
 
 
     //TODO add email verify https://www.codejava.net/frameworks/spring-boot/email-verification-example
-    public static User create(String email, String password, RoleEnum role) {
+    public static User create(String email, String password, RoleEnum role, boolean enabled) {
         return User.builder()
                 .email(email)
                 .password(password)
                 .role(role)
+                .enabled(enabled)
                 .build();
-    }
-
-    public boolean isValid() {
-        boolean isValid = true;
-        if (this.email == null || this.email.trim().equals("")) {
-            isValid = false;
-        }
-        if (this.password == null || this.password.trim().equals("")) {
-            isValid = false;
-        }
-        return isValid;
     }
 
     public User updateWith(User newUser) {
@@ -63,7 +58,6 @@ public class User {
                 .id(this.id)
                 .email(newUser.getEmail())
                 .password(newUser.getPassword())
-//                .role(newUser.getRole())
                 .role(this.role)
                 .build();
     }

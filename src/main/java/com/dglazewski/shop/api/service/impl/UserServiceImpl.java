@@ -25,16 +25,12 @@ public class UserServiceImpl implements UserService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
         }
-        if (!newUser.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS);
-        }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
                 userRepository.save(User.create(
                         newUser.getEmail(),
                         passwordEncoder.encode(newUser.getPassword()),
-                        newUser.getRole()))
+                        newUser.getRole(),true))
         );
     }
 
@@ -45,17 +41,12 @@ public class UserServiceImpl implements UserService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
         }
-        if (!newUser.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS
-            );
-        }
         return user
                 .map(oldUser -> {
                     User updatedUser = oldUser.updateWith(User.create(
                             newUser.getEmail(),
                             passwordEncoder.encode(newUser.getPassword()),
-                            newUser.getRole()));
+                            newUser.getRole(),true));
                     userRepository.save(updatedUser);
                     return new DataBaseStatusResponse<>(
                             Status.RECORD_UPDATED_SUCCESSFULLY,

@@ -8,9 +8,15 @@ import com.dglazewski.shop.api.repository.CustomerRepository;
 import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.CustomerService;
 import lombok.AllArgsConstructor;
+import net.bytebuddy.utility.RandomString;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @Service
@@ -20,18 +26,75 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     private UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private JavaMailSender mailSender;
 
+    public DataBaseStatusResponse<Customer> register(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException {
+        String encodedPassword = passwordEncoder.encode(newCustomer.getUser().getPassword());
+        newCustomer.getUser().setPassword(encodedPassword);
 
+        String randomCode = RandomString.make(64);
+        newCustomer.getUser().setVerificationCode(randomCode);
+        newCustomer.getUser().setEnabled(false);
+        DataBaseStatusResponse<Customer> response = addCustomer(newCustomer);
+
+        if (response.getStatus().name().equals(Status.RECORD_CREATED_SUCCESSFULLY.name())) {
+            sendVerificationEmail(newCustomer, siteURL);
+        }
+        return response;
+    }
+
+    public void sendVerificationEmail(Customer customer, String siteURL) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = customer.getUser().getEmail();
+        String fromAddress = "jan.kowalski.shop.app@gmail.com";
+        String senderName = "SZPRX industries";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "Your company name.";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        content = content.replace("[[name]]", customer.getName() + " " + customer.getLastName());
+        String verifyURL = siteURL + "/verify/?code=" + customer.getUser().getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+
+    }
+
+    @Override
+    public DataBaseStatusResponse<Customer> verify(String verificationCode) {
+        Optional<Customer> customer = customerRepository.findByUserVerificationCode(verificationCode);
+        if (customer.isEmpty() || customer.get().getUser().isEnabled()) {
+            return new DataBaseStatusResponse<>(
+                    Status.USER_VERIFICATION_FAILURE
+            );
+        }
+        customer.get().getUser().setVerificationCode(null);
+        customer.get().getUser().setEnabled(true);
+
+        return new DataBaseStatusResponse<>(
+                Status.USER_VERIFICATION_SUCCESS,
+                customerRepository.save(customer.get()));
+    }
+
+    //TODO delete second Customer.create() in addCustomer and updateCustomer
     @Override
     public DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
         Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
         if (user.isPresent()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
-        }
-        if (!newCustomer.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS);
         }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
@@ -49,11 +112,6 @@ public class CustomerServiceImpl implements CustomerService {
         if (customer.isEmpty()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
-        }
-        if (!newCustomer.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS
-            );
         }
         return customer
                 .map(oldCustomer -> {

@@ -1,6 +1,5 @@
 package com.dglazewski.shop.gui.view.anonymous;
 
-import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
@@ -10,7 +9,6 @@ import com.dglazewski.shop.gui.view.everyone.HomeView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -18,10 +16,15 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
+
 @Route(value = "register", layout = AppLayoutDrawer.class)
 @PageTitle("Register")
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
+
+    private final String siteUrl = "http://localhost:8080/register";
 
     //SERVICE
     private final String role = SecurityService.getCurrentUserRole();
@@ -58,13 +61,23 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         this.registerButton.addClickListener(buttonClickEvent -> {
             registerFormLayout.validate();
             if (registerFormLayout.isValid()) {
-                DataBaseStatusResponse<Customer> dataBaseStatusResponse = this.customerService.addCustomer(
-                        Customer.create(
-                                registerFormLayout.getFirstNameTextField().getValue(),
-                                registerFormLayout.getLastNameTextField().getValue(),
-                                registerFormLayout.getEmailField().getValue(),
-                                registerFormLayout.getPasswordField().getValue()));
-                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
+
+                try {
+                    customerService.register(Customer.create(
+                            registerFormLayout.getFirstNameTextField().getValue(),
+                            registerFormLayout.getLastNameTextField().getValue(),
+                            registerFormLayout.getEmailField().getValue(),
+                            registerFormLayout.getPasswordField().getValue()), siteUrl);
+                } catch (MessagingException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+//                DataBaseStatusResponse<Customer> dataBaseStatusResponse = this.customerService.addCustomer(
+//                        Customer.create(
+//                                registerFormLayout.getFirstNameTextField().getValue(),
+//                                registerFormLayout.getLastNameTextField().getValue(),
+//                                registerFormLayout.getEmailField().getValue(),
+//                                registerFormLayout.getPasswordField().getValue()));
+//                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             }
         });
     }

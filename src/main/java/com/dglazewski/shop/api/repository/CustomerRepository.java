@@ -12,5 +12,6 @@ public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
     Optional<Customer> findByName(String name);
     Optional<Customer> findByUserEmail(String email);
-    //TODO add this to UserAccountView to fount which user is logged in
+    Optional<Customer> findByUserVerificationCode(String verificationCode);
+
 }
