@@ -12,7 +12,6 @@ public class DataBaseStatusResponse<T> {
     private T entity;
 
     public DataBaseStatusResponse(Status status) {
-        this.status = status;
-        this.entity = null;
+        this(status, null);
     }
 }

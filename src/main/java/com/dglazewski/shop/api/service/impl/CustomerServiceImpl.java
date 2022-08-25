@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.getUser().setEnabled(false);
         DataBaseStatusResponse<Customer> response = addCustomer(newCustomer);
 
-        if (response.getStatus().name().equals(Status.RECORD_CREATED_SUCCESSFULLY.name())) {
+        if (response.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
             sendVerificationEmail(newCustomer, siteURL);
         }
         return response;
