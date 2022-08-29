@@ -33,7 +33,6 @@ public class Product {
     private String name;
     @Column(name = "price")
     private double price;
-
     @Column(name = "amount")
     private int amount;
     @Column(name = "image_url")

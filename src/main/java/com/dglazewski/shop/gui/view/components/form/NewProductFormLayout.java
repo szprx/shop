@@ -54,7 +54,6 @@ public class NewProductFormLayout extends FormLayout implements Validatable {
 
     private void configFromLayout() {
         setResponsiveSteps(new FormLayout.ResponsiveStep("200px", 2));
-        setColspan(this.nameTextField, 1);
     }
 
     private void configAmountIntegerField() {

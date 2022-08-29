@@ -46,13 +46,13 @@ public class CustomerServiceImpl implements CustomerService {
     public void sendVerificationEmail(Customer customer, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String toAddress = customer.getUser().getEmail();
         String fromAddress = "jan.kowalski.shop.app@gmail.com";
-        String senderName = "SZPRX industries";
+        String senderName = "Smart code inc";
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"
                 + "Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + "Your company name.";
+                + "Smart code inc.";
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -72,6 +72,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
 
+    private DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
+        Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
+        if (user.isPresent()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_ALREADY_EXIST);
+        }
+        return new DataBaseStatusResponse<>(
+                Status.RECORD_CREATED_SUCCESSFULLY,
+                customerRepository.save(newCustomer));
+    }
+
     @Override
     public DataBaseStatusResponse<User> verify(String verificationCode) {
         Optional<User> user = userRepository.findByVerificationCode(verificationCode);
@@ -86,17 +97,6 @@ public class CustomerServiceImpl implements CustomerService {
         return new DataBaseStatusResponse<>(
                 Status.USER_VERIFICATION_SUCCESS,
                 userRepository.save(user.get()));
-    }
-
-    public DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
-        Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
-        if (user.isPresent()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_ALREADY_EXIST);
-        }
-        return new DataBaseStatusResponse<>(
-                Status.RECORD_CREATED_SUCCESSFULLY,
-                customerRepository.save(newCustomer));
     }
 
     @Override

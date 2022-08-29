@@ -2,9 +2,11 @@ package com.dglazewski.shop.gui.view.anonymous;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
+import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.view.components.RegisterDialog;
 import com.dglazewski.shop.gui.view.components.form.RegisterFormLayout;
 import com.dglazewski.shop.gui.view.everyone.HomeView;
 import com.vaadin.flow.component.button.Button;
@@ -38,6 +40,9 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
     //BUTTON
     private final Button registerButton;
 
+    //DIALOG
+    private final RegisterDialog registerDialog;
+
     public RegisterView(CustomerService customerService) {
 
         //SERVICE
@@ -50,10 +55,14 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
         this.registerButton = new Button("Register");
         configRegisterButton();
 
+        //DIALOG
+        this.registerDialog = new RegisterDialog("Registration successful", "Verification link has been send to your email. Please confirm your account.");
+
         add(new Paragraph("Register now!"));
 
         add(this.registerFormLayout,
-                this.registerButton);
+                this.registerButton,
+                this.registerDialog);
     }
 
     private void configRegisterButton() {
@@ -67,6 +76,9 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                             registerFormLayout.getEmailField().getValue(),
                             registerFormLayout.getPasswordField().getValue()), REGISTER_SITE_URL);
                     Notification.show(response.getStatus().toString().replace("_", " "));
+                    if (response.getStatus()== Status.RECORD_CREATED_SUCCESSFULLY) {
+                        this.registerDialog.getDialog().open();
+                    }
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

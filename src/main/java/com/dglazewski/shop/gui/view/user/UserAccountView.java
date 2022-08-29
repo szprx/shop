@@ -1,14 +1,15 @@
 package com.dglazewski.shop.gui.view.user;
 
+import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
@@ -25,17 +26,21 @@ import javax.annotation.security.RolesAllowed;
 @PageTitle("My account | USER")
 @RolesAllowed("CUSTOMER")
 public class UserAccountView extends Div {
+    private final CustomerService customerService;
+    private final SecurityService securityService;
+    private final String userEmail;
 
     private final Tab profile;
     private final Tab settings;
-
     private final VerticalLayout content;
-    private final CustomerService customerService;
-    private final SecurityService securityService = new SecurityService();
 
 
-    public UserAccountView(CustomerService customerService) {
+    public UserAccountView(CustomerService customerService, SecurityService securityService) {
         this.customerService = customerService;
+        this.securityService = securityService;
+        this.userEmail = securityService.getAuthenticatedUser().getUsername();
+
+
         profile = new Tab(
                 VaadinIcon.USER.create(),
                 new Span("Profile")
@@ -45,7 +50,6 @@ public class UserAccountView extends Div {
                 new Span("Settings")
         );
 
-        // Set the icon on top
         for (Tab tab : new Tab[]{profile, settings}) {
             tab.addThemeVariants(TabVariant.LUMO_ICON_ON_TOP);
         }
@@ -74,35 +78,19 @@ public class UserAccountView extends Div {
     }
 
     private Div getProfileDiv() {
-        Div div = new Div();
-
-        //2 lub 3 divy w jednej sekcji
-        //a zamiast divow to bym zrobil nawet verticalLayout bo lepiej idzie to srodkowac
-        //wykminic co trza tu wrzucic
-
         Div profileDataDiv = new Div();
-//        Div profileOrderHistory = new Div();
+        Customer customer = customerService.getCustomer(userEmail).getEntity();
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.setPadding(true);
-        horizontalLayout.add(profileDataDiv);
-
-        div.add(new Paragraph("This is the profile tab"));
-
-
-        //TODO dodac przekzywanie kokretnego usera badz jego id aby pobierac jego szczegolowe dane
-
+        profileDataDiv.add(new H1("Account details"));
         TextField firstName = new TextField("First name");
         firstName.setReadOnly(true);
-
-        //todo zmienic zeby szukalo po czyms innym
-        firstName.setValue(customerService.getCustomer(securityService.getAuthenticatedUser().getUsername()).getEntity().getName());
+        firstName.setValue(customer.getName());
         TextField lastName = new TextField("Last name");
         lastName.setReadOnly(true);
-        lastName.setValue("Kowalski");
+        lastName.setValue(customer.getLastName());
         EmailField email = new EmailField("Email");
         email.setReadOnly(true);
-        email.setValue("jan_kowalski@gmail.com");
+        email.setValue(customer.getUser().getEmail());
 
         //change password raczej w oddzielnej karcie
 //        PasswordField password = new PasswordField("Password");
@@ -121,13 +109,7 @@ public class UserAccountView extends Div {
         );
         // Stretch the username field over 2 columns
         formLayout.setColspan(firstName, 2);
-
         profileDataDiv.add(formLayout);
-//        profileOrderHistory.add(new Paragraph("Order history"));
-
-
-        div.add(horizontalLayout);
-
-        return div;
+        return profileDataDiv;
     }
 }

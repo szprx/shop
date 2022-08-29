@@ -6,10 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Getter
 @Setter
 @Builder
@@ -40,9 +43,13 @@ public class Customer {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Column(name = "orders")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "shopping_card_products")
+    private List<Product> shoppingCard = new ArrayList<>();
 
     public static Customer create(String name, String lastName, String email, String password) {
         return Customer.builder()
@@ -50,6 +57,7 @@ public class Customer {
                 .lastName(lastName)
                 .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER, false))
                 .orders(new ArrayList<>())
+                .shoppingCard(new ArrayList<>())
                 .build();
     }
 
@@ -60,6 +68,7 @@ public class Customer {
                 .lastName(customer.getLastName())
                 .user(this.user)
                 .orders(customer.getOrders())
+                .shoppingCard(customer.getShoppingCard())
                 .build();
     }
 }
