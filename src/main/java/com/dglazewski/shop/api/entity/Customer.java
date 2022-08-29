@@ -49,6 +49,7 @@ public class Customer {
                 .name(name)
                 .lastName(lastName)
                 .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER, false))
+                .orders(new ArrayList<>())
                 .build();
     }
 

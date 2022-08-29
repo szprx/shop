@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.Table;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 @Getter
 @Setter
@@ -27,7 +29,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "email")
     private String email;
     @Column(name = "password")
@@ -36,14 +37,13 @@ public class User {
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
 
+    @Column(name = "is_enabled")
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private RoleEnum role;
 
-
-    //TODO add email verify https://www.codejava.net/frameworks/spring-boot/email-verification-example
     public static User create(String email, String password, RoleEnum role, boolean enabled) {
         return User.builder()
                 .email(email)
@@ -59,6 +59,7 @@ public class User {
                 .email(newUser.getEmail())
                 .password(newUser.getPassword())
                 .role(this.role)
+                .enabled(this.enabled)
                 .build();
     }
 }

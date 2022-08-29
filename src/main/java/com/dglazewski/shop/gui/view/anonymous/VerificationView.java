@@ -2,6 +2,7 @@ package com.dglazewski.shop.gui.view.anonymous;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
+import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
@@ -31,7 +32,7 @@ public class VerificationView extends VerticalLayout implements HasUrlParameter<
     }
 
     private void verifyCustomer() {
-        DataBaseStatusResponse<Customer> response = customerService.verify(verificationCode);
+        DataBaseStatusResponse<User> response = customerService.verify(verificationCode);
         if (response.getStatus() == Status.USER_VERIFICATION_SUCCESS) {
             add(new Span("Succes"));
         } else if (response.getStatus() == Status.USER_VERIFICATION_FAILURE) {

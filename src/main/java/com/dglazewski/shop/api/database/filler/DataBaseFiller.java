@@ -37,6 +37,7 @@ public class DataBaseFiller {
             productService.addProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
             userService.addUser(User.create("admin", "admin", RoleEnum.ROLE_ADMIN,true));
+            userService.addUser(User.create("customer", "customer", RoleEnum.ROLE_CUSTOMER,true));
 
 //            customerService.addCustomer(Customer.create("Jan", "Kowalski", "customer", "customer"));
         };

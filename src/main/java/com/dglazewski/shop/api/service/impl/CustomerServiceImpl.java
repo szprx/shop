@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
         String randomCode = RandomString.make(64);
         newCustomer.getUser().setVerificationCode(randomCode);
         newCustomer.getUser().setEnabled(false);
-        DataBaseStatusResponse<Customer> response = addCustomer(newCustomer);
+        DataBaseStatusResponse<Customer> response = createCustomer(newCustomer);
 
         if (response.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
             sendVerificationEmail(newCustomer, siteURL);
@@ -73,46 +73,48 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public DataBaseStatusResponse<Customer> verify(String verificationCode) {
-        Optional<Customer> customer = customerRepository.findByUserVerificationCode(verificationCode);
-        if (customer.isEmpty() || customer.get().getUser().isEnabled()) {
+    public DataBaseStatusResponse<User> verify(String verificationCode) {
+        Optional<User> user = userRepository.findByVerificationCode(verificationCode);
+        if (user.isEmpty() || user.get().isEnabled()) {
             return new DataBaseStatusResponse<>(
                     Status.USER_VERIFICATION_FAILURE
             );
         }
-        customer.get().getUser().setVerificationCode(null);
-        customer.get().getUser().setEnabled(true);
+        user.get().setVerificationCode(null);
+        user.get().setEnabled(true);
 
         return new DataBaseStatusResponse<>(
                 Status.USER_VERIFICATION_SUCCESS,
-                customerRepository.save(customer.get()));
+                userRepository.save(user.get()));
     }
 
-    //TODO delete second Customer.create() in addCustomer and updateCustomer
     @Override
-    public DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
+    public DataBaseStatusResponse<Customer> createCustomer(Customer newCustomer) {
         Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
         if (user.isPresent()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
         }
+        newCustomer.getUser().setPassword(passwordEncoder.encode(newCustomer.getUser().getPassword()));
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
-                customerRepository.save(Customer.create(
-                        newCustomer.getName(),
-                        newCustomer.getLastName(),
-                        newCustomer.getUser().getEmail(),
-                        passwordEncoder.encode(newCustomer.getUser().getPassword()))));
+                customerRepository.save(newCustomer));
     }
 
     @Override
     public DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer newCustomer) {
-        //TODO add checking if used email is occupied
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isEmpty()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
         }
+
+        Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
+        if (user.isPresent()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_ALREADY_EXIST);
+        }
+
         return customer
                 .map(oldCustomer -> {
                     Customer updatedCustomer = oldCustomer.updateWith(newCustomer);
@@ -122,7 +124,7 @@ public class CustomerServiceImpl implements CustomerService {
                             updatedCustomer);
                 })
                 .orElse(new DataBaseStatusResponse<>(
-                        Status.RECORD_ALREADY_EXIST));
+                        Status.UNKNOWN_DATABASE_ERROR));
     }
 
     @Override

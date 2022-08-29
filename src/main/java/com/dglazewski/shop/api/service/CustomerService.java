@@ -8,7 +8,7 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 public interface CustomerService {
-    DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer);//zakladanie konta aczkolwiek przy dodawaniu usera juz to bedzie obslugiwane
+    DataBaseStatusResponse<Customer> createCustomer(Customer newCustomer);//zakladanie konta aczkolwiek przy dodawaniu usera juz to bedzie obslugiwane
 
     DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer updatedCustomer);//edycja konta gdzie cascade powinno automatycznie zaktualizowac reszte
 
@@ -22,6 +22,6 @@ public interface CustomerService {
 
     void sendVerificationEmail(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException;
 
-    DataBaseStatusResponse<Customer> verify(String verificationCode);
+    DataBaseStatusResponse<User> verify(String verificationCode);
 
 }
