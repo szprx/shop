@@ -8,7 +8,6 @@ import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 public interface CustomerService {
-    DataBaseStatusResponse<Customer> createCustomer(Customer newCustomer);//zakladanie konta aczkolwiek przy dodawaniu usera juz to bedzie obslugiwane
 
     DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer updatedCustomer);//edycja konta gdzie cascade powinno automatycznie zaktualizowac reszte
 

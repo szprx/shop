@@ -23,10 +23,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
-    private CustomerRepository customerRepository;
-    private UserRepository userRepository;
+    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public DataBaseStatusResponse<Customer> register(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException {
         String encodedPassword = passwordEncoder.encode(newCustomer.getUser().getPassword());
@@ -34,8 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         String randomCode = RandomString.make(64);
         newCustomer.getUser().setVerificationCode(randomCode);
-        newCustomer.getUser().setEnabled(false);
-        DataBaseStatusResponse<Customer> response = createCustomer(newCustomer);
+
+        DataBaseStatusResponse<Customer> response = addCustomer(newCustomer);
 
         if (response.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
             sendVerificationEmail(newCustomer, siteURL);
@@ -88,14 +88,12 @@ public class CustomerServiceImpl implements CustomerService {
                 userRepository.save(user.get()));
     }
 
-    @Override
-    public DataBaseStatusResponse<Customer> createCustomer(Customer newCustomer) {
+    public DataBaseStatusResponse<Customer> addCustomer(Customer newCustomer) {
         Optional<User> user = userRepository.findByEmail(newCustomer.getUser().getEmail());
         if (user.isPresent()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
         }
-        newCustomer.getUser().setPassword(passwordEncoder.encode(newCustomer.getUser().getPassword()));
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
                 customerRepository.save(newCustomer));

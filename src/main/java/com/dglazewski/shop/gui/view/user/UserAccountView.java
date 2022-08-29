@@ -94,6 +94,8 @@ public class UserAccountView extends Div {
 
         TextField firstName = new TextField("First name");
         firstName.setReadOnly(true);
+
+        //todo zmienic zeby szukalo po czyms innym
         firstName.setValue(customerService.getCustomer(securityService.getAuthenticatedUser().getUsername()).getEntity().getName());
         TextField lastName = new TextField("Last name");
         lastName.setReadOnly(true);

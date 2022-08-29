@@ -1,10 +1,8 @@
 package com.dglazewski.shop.api.database.filler;
 
-import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.enums.RoleEnum;
-import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.api.service.ProductService;
 import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Component;
 public class DataBaseFiller {
 
     private ProductService productService;
-    private CustomerService customerService;
     private UserService userService;
 
     @Bean
@@ -36,10 +33,7 @@ public class DataBaseFiller {
             productService.addProduct(Product.create("garapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
             productService.addProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
-            userService.addUser(User.create("admin", "admin", RoleEnum.ROLE_ADMIN,true));
-            userService.addUser(User.create("customer", "customer", RoleEnum.ROLE_CUSTOMER,true));
-
-//            customerService.addCustomer(Customer.create("Jan", "Kowalski", "customer", "customer"));
+            userService.addUser(User.create("admin", "admin", RoleEnum.ROLE_ADMIN, true));
         };
     }
 }

@@ -1,14 +1,16 @@
 package com.dglazewski.shop.gui.view.anonymous;
 
+import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
-import com.dglazewski.shop.gui.view.components.RegisterFormLayout;
+import com.dglazewski.shop.gui.view.components.form.RegisterFormLayout;
 import com.dglazewski.shop.gui.view.everyone.HomeView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -24,7 +26,7 @@ import java.io.UnsupportedEncodingException;
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
 
-    private final String siteUrl = "http://localhost:8080/register";
+    private static final String REGISTER_SITE_URL = "http://localhost:8080/register";
 
     //SERVICE
     private final String role = SecurityService.getCurrentUserRole();
@@ -54,30 +56,20 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 this.registerButton);
     }
 
-
-    //TODO add verify by email link
     private void configRegisterButton() {
         this.registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.registerButton.addClickListener(buttonClickEvent -> {
-            registerFormLayout.validate();
             if (registerFormLayout.isValid()) {
-
                 try {
-                    customerService.register(Customer.create(
+                    DataBaseStatusResponse<Customer> response = customerService.register(Customer.create(
                             registerFormLayout.getFirstNameTextField().getValue(),
                             registerFormLayout.getLastNameTextField().getValue(),
                             registerFormLayout.getEmailField().getValue(),
-                            registerFormLayout.getPasswordField().getValue()), siteUrl);
+                            registerFormLayout.getPasswordField().getValue()), REGISTER_SITE_URL);
+                    Notification.show(response.getStatus().toString().replace("_", " "));
                 } catch (MessagingException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-//                DataBaseStatusResponse<Customer> dataBaseStatusResponse = this.customerService.addCustomer(
-//                        Customer.create(
-//                                registerFormLayout.getFirstNameTextField().getValue(),
-//                                registerFormLayout.getLastNameTextField().getValue(),
-//                                registerFormLayout.getEmailField().getValue(),
-//                                registerFormLayout.getPasswordField().getValue()));
-//                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             }
         });
     }

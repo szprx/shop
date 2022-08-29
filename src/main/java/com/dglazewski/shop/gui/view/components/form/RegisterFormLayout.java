@@ -1,6 +1,7 @@
-package com.dglazewski.shop.gui.view.components;
+package com.dglazewski.shop.gui.view.components.form;
 
-import com.dglazewski.shop.gui.validator.RegisterFormLayoutValidator;
+import com.dglazewski.shop.gui.view.components.validator.RegisterFormLayoutValidator;
+import com.dglazewski.shop.gui.view.components.validator.Validatable;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -8,17 +9,17 @@ import com.vaadin.flow.component.textfield.TextField;
 import lombok.Getter;
 
 @Getter
-public class RegisterFormLayout extends FormLayout {
+public class RegisterFormLayout extends FormLayout implements Validatable {
 
     //FIELD
-    private TextField firstNameTextField;
-    private TextField lastNameTextField;
-    private EmailField emailField;
-    private PasswordField passwordField;
-    private PasswordField confirmPasswordField;
+    private final TextField firstNameTextField;
+    private final TextField lastNameTextField;
+    private final EmailField emailField;
+    private final PasswordField passwordField;
+    private final PasswordField confirmPasswordField;
 
     //VALIDATOR
-    private RegisterFormLayoutValidator registerValidator;
+    private final RegisterFormLayoutValidator registerValidator;
 
     public RegisterFormLayout() {
         //FIELD
@@ -31,11 +32,7 @@ public class RegisterFormLayout extends FormLayout {
         //FIELD CONFIG
         this.passwordField.setHelperText("Minimum 6 chars");
 
-        setResponsiveSteps(
-                new FormLayout.ResponsiveStep("0", 1),
-                new FormLayout.ResponsiveStep("500px", 2)
-        );
-        setColspan(emailField, 2);
+        configFormLayout();
 
         //VALIDATOR
         this.registerValidator = new RegisterFormLayoutValidator();
@@ -47,15 +44,24 @@ public class RegisterFormLayout extends FormLayout {
         );
     }
 
+    private void configFormLayout() {
+        setResponsiveSteps(
+                new ResponsiveStep("0", 1),
+                new ResponsiveStep("500px", 2)
+        );
+        setColspan(emailField, 2);
+    }
+
+    @Override
     public boolean isValid() {
+        validate();
         return !firstNameTextField.isInvalid() && !lastNameTextField.isInvalid() && !emailField.isInvalid() && !passwordField.isInvalid();
     }
 
-    public void validate() {
+    private void validate() {
         registerValidator.validateName(firstNameTextField);
         registerValidator.validateName(lastNameTextField);
         registerValidator.validateEmail(emailField);
         registerValidator.validatePassword(passwordField, confirmPasswordField);
-
     }
 }
