@@ -92,3 +92,7 @@ create account+
 Log out ONLY ICON
 
 TODO: make update operations not allowed creating duplicates
+
+TODO: adding to shopping card firstly, later creating order, later listr of orders, later user account view
+kilka dni odpoczynku 29.08.2022 zajme sie na kilka dni czysta java :)
+
