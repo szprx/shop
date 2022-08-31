@@ -42,7 +42,8 @@ public class Customer {
     private User user;
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
     private Card shoppingCard;
 
     public static Customer create(String name, String lastName, String email, String password) {
@@ -51,7 +52,7 @@ public class Customer {
                 .lastName(lastName)
                 .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER, false))
                 .orders(new ArrayList<>())
-//                .shoppingCard()
+                .shoppingCard(Card.create())
                 .build();
     }
 

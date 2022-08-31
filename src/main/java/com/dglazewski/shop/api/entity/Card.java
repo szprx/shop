@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +28,20 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-        @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "CARD_PRODUCTS",
-            joinColumns = @JoinColumn(name = "CARD_ID",referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID",referencedColumnName = "ID"))
+            joinColumns = @JoinColumn(name = "CARD_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID"))
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
-    private Customer customer;
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
+//    private Customer customer;
+
+    public static Card create() {
+        return Card.builder()
+                .products(new ArrayList<>())
+                .build();
+    }
 }
-//todo naprawiac
