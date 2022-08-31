@@ -1,7 +1,6 @@
 package com.dglazewski.shop.api.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,27 +22,27 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Getter
-@Table(name = "ORDERS")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "ORDER_PRODUCTS",
-            joinColumns = @JoinColumn(name = "ORDER_ID",referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID",referencedColumnName = "ID"))
+    @JoinTable(name = "order_products",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private List<Product> products = new ArrayList<>();
 
     @Column(name = "is_paid")
     private boolean isPaid;
+
     @Column(name = "is_active")
     private boolean isActive;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CUSTOMER_ID")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @Column(name = "order_date")

@@ -1,10 +1,10 @@
-package com.dglazewski.shop.gui.view.admin;
+package com.dglazewski.shop.gui.admin.view;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.service.ProductService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
-import com.dglazewski.shop.gui.view.components.form.NewProductFormLayout;
+import com.dglazewski.shop.gui.admin.components.ProductFormLayout;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.notification.Notification;
@@ -24,7 +24,7 @@ public class ProductAddAdminView extends VerticalLayout {
     private final ProductService productService;
 
     //FORM LAYOUT
-    private final NewProductFormLayout newProductFormLayout;
+    private final ProductFormLayout productFormLayout;
 
     //BUTTON
     private final Button addProductButton;
@@ -36,7 +36,7 @@ public class ProductAddAdminView extends VerticalLayout {
         this.productService = productService;
 
         //FORM LAYOUT
-        this.newProductFormLayout = new NewProductFormLayout();
+        this.productFormLayout = new ProductFormLayout();
 
         //BUTTON
         this.addProductButton = new Button("Add");
@@ -48,7 +48,7 @@ public class ProductAddAdminView extends VerticalLayout {
 
         configCss();
 
-        add(newProductFormLayout,
+        add(productFormLayout,
                 new HorizontalLayout(addProductButton, clearButton, cancelButton));
     }
 
@@ -61,12 +61,12 @@ public class ProductAddAdminView extends VerticalLayout {
         this.addProductButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.addProductButton.addClickListener(buttonClickEvent -> {
             try {
-                if (this.newProductFormLayout.isValid()) {
-                    DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.addProduct(Product.create(
-                            this.newProductFormLayout.getNameTextField().getValue(),
-                            this.newProductFormLayout.getPriceNumberField().getValue(),
-                            this.newProductFormLayout.getAmountIntegerField().getValue(),
-                            this.newProductFormLayout.getImageUrlTextField().getValue()));
+                if (this.productFormLayout.isValid()) {
+                    DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.saveProduct(Product.create(
+                            this.productFormLayout.getNameTextField().getValue(),
+                            this.productFormLayout.getPriceNumberField().getValue(),
+                            this.productFormLayout.getAmountIntegerField().getValue(),
+                            this.productFormLayout.getImageUrlTextField().getValue()));
                     Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
                 }
             } catch (NullPointerException ex) {
@@ -78,10 +78,10 @@ public class ProductAddAdminView extends VerticalLayout {
 
     private void configClearButton() {
         this.clearButton.addClickListener(buttonClickEvent -> {
-            this.newProductFormLayout.getNameTextField().setValue("");
-            this.newProductFormLayout.getPriceNumberField().setValue(0.00);
-            this.newProductFormLayout.getAmountIntegerField().setValue(0);
-            this.newProductFormLayout.getImageUrlTextField().setValue("");
+            this.productFormLayout.getNameTextField().setValue("");
+            this.productFormLayout.getPriceNumberField().setValue(0.00);
+            this.productFormLayout.getAmountIntegerField().setValue(0);
+            this.productFormLayout.getImageUrlTextField().setValue("");
             Notification.show("LABELS CLEARED");
         });
     }

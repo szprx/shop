@@ -9,5 +9,4 @@ public interface OrderService {
     DataBaseStatusResponse<Order> updateOrder(Long id, Order updatedOrder);//zmiana stanu zamowienia
 
     DataBaseStatusResponse<Order> getOrder(Long id);//pobranie zamowienia
-
 }

@@ -1,18 +1,18 @@
-package com.dglazewski.shop.gui.view.components;
+package com.dglazewski.shop.gui.everyone.components;
 
 
 import com.dglazewski.shop.api.seciurity.SecurityService;
-import com.dglazewski.shop.gui.view.everyone.HomeView;
-import com.dglazewski.shop.gui.view.everyone.LoginView;
-import com.dglazewski.shop.gui.view.everyone.ProductsView;
-import com.dglazewski.shop.gui.view.admin.OrdersAdminView;
-import com.dglazewski.shop.gui.view.admin.ProductAddAdminView;
-import com.dglazewski.shop.gui.view.admin.ProductsAdminView;
-import com.dglazewski.shop.gui.view.anonymous.RegisterView;
-import com.dglazewski.shop.gui.view.user.NotificationsView;
-import com.dglazewski.shop.gui.view.user.OrdersUserView;
-import com.dglazewski.shop.gui.view.user.ShoppingCardView;
-import com.dglazewski.shop.gui.view.user.UserAccountView;
+import com.dglazewski.shop.gui.everyone.view.ProductsView;
+import com.dglazewski.shop.gui.user.view.NotificationsView;
+import com.dglazewski.shop.gui.user.view.OrdersUserView;
+import com.dglazewski.shop.gui.user.view.ShoppingCardView;
+import com.dglazewski.shop.gui.user.view.UserAccountView;
+import com.dglazewski.shop.gui.everyone.view.HomeView;
+import com.dglazewski.shop.gui.everyone.view.LoginView;
+import com.dglazewski.shop.gui.admin.view.OrdersAdminView;
+import com.dglazewski.shop.gui.admin.view.ProductAddAdminView;
+import com.dglazewski.shop.gui.admin.view.ProductsMenageAdminView;
+import com.dglazewski.shop.gui.anonymous.view.RegisterView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -81,7 +81,7 @@ public class AppLayoutDrawer extends AppLayout {
             setStyles(icon);
             link = new RouterLink();
             link.add(icon, new Span("Manage products"));
-            link.setRoute(ProductsAdminView.class);
+            link.setRoute(ProductsMenageAdminView.class);
             link.setTabIndex(-1);
             tabs.add(new Tab(link));
 

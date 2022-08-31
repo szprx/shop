@@ -1,0 +1,12 @@
+TODO:zrobic zmieane waluty przy uzyciu zewnetrznego api
+
+Co można zrobić z zamowieniem?
+- stworzyc nowe
+- edytowac czyli anulowac lub za nie zaplacic ( co bedzie sie dzialo po stronie frontu lub, zrobie to w controllerach)
+- pobrac zamowienie aby je wtswietlic
+
+TODO: dodac responsywnosc https://vaadin.com/directory/component/responsive-layout/overview
+
+TODO: adding to shopping card firstly, later creating order, later listr of orders, later user account view
+TODO: change security to my own config
+TODO: change customerService to do what it says so - add new class for email sending

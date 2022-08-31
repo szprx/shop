@@ -1,7 +1,7 @@
-package com.dglazewski.shop.gui.view.everyone;
+package com.dglazewski.shop.gui.everyone.view;
 
 import com.dglazewski.shop.api.seciurity.SecurityService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

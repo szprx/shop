@@ -18,7 +18,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public DataBaseStatusResponse<Product> addProduct(Product newProduct) {
+    public DataBaseStatusResponse<Product> saveProduct(Product newProduct) {
         Optional<Product> product = productRepository.findByName(newProduct.getName());
         if (product.isPresent()) {
             return new DataBaseStatusResponse<>(
@@ -32,6 +32,24 @@ public class ProductServiceImpl implements ProductService {
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
                 productRepository.save(newProduct));
+    }
+
+    @Override
+    public DataBaseStatusResponse<Product> getProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_DOESNT_EXIST);
+        }
+        return new DataBaseStatusResponse<>(
+                Status.RECORD_RETRIEVED_SUCCESSFULLY,
+                product.get());
+    }
+
+    @Override
+    public DataBaseStatusResponse<List<Product>> getAllProducts() {
+        return new DataBaseStatusResponse<>(Status.RECORD_RETRIEVED_SUCCESSFULLY, productRepository.findAll());
+
     }
 
     @Override
@@ -58,23 +76,5 @@ public class ProductServiceImpl implements ProductService {
                         Status.UNKNOWN_DATABASE_ERROR));
 
         //TODO: check if this response is valid
-    }
-
-    @Override
-    public DataBaseStatusResponse<Product> getProduct(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_DOESNT_EXIST);
-        }
-        return new DataBaseStatusResponse<>(
-                Status.RECORD_RETRIEVED_SUCCESSFULLY,
-                product.get());
-    }
-
-    @Override
-    public DataBaseStatusResponse<List<Product>> getAllProducts() {
-        return new DataBaseStatusResponse<>(Status.RECORD_RETRIEVED_SUCCESSFULLY, productRepository.findAll());
-
     }
 }

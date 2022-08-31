@@ -1,10 +1,10 @@
-package com.dglazewski.shop.gui.view.admin;
+package com.dglazewski.shop.gui.admin.view;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.ProductService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -35,7 +35,7 @@ import java.util.List;
 @Route(value = "admin/product/all", layout = AppLayoutDrawer.class)
 @PageTitle("All products | ADMIN")
 @RolesAllowed("ADMIN")
-public class ProductsAdminView extends VerticalLayout {
+public class ProductsMenageAdminView extends VerticalLayout {
 
     //SERVICE
     private final ProductService productService;
@@ -67,7 +67,7 @@ public class ProductsAdminView extends VerticalLayout {
     private Grid.Column<Product> editColumn;
 
 
-    public ProductsAdminView(ProductService productService) {
+    public ProductsMenageAdminView(ProductService productService) {
 
         //SERVICE
         this.productService = productService;

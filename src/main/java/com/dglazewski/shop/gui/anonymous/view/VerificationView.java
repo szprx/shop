@@ -1,10 +1,10 @@
-package com.dglazewski.shop.gui.view.anonymous;
+package com.dglazewski.shop.gui.anonymous.view;
 
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.enums.Status;
-import com.dglazewski.shop.api.service.CustomerService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.api.service.RegistrationService;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
@@ -19,11 +19,11 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 @AnonymousAllowed
 public class VerificationView extends VerticalLayout implements HasUrlParameter<String> {
     //SERVICE
-    private final CustomerService customerService;
+    private final RegistrationService registrationService;
     private String verificationCode;
 
-    public VerificationView(CustomerService customerService) {
-        this.customerService = customerService;
+    public VerificationView(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class VerificationView extends VerticalLayout implements HasUrlParameter<
     }
 
     private void verifyCustomer() {
-        DataBaseStatusResponse<User> response = customerService.verify(verificationCode);
+        DataBaseStatusResponse<User> response = registrationService.verify(verificationCode);
         if (response.getStatus() == Status.USER_VERIFICATION_SUCCESS) {
             add(new H1("Verification success"));
             //TODO add link to log in

@@ -1,9 +1,9 @@
-package com.dglazewski.shop.gui.view.user;
+package com.dglazewski.shop.gui.user.view;
 
 import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;

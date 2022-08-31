@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,22 +21,16 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "CARD")
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "CARD_PRODUCTS",
-            joinColumns = @JoinColumn(name = "CARD_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID"))
+    @JoinTable(name = "card_products",
+            joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private List<Product> products = new ArrayList<>();
-
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
-//    private Customer customer;
 
     public static Card create() {
         return Card.builder()

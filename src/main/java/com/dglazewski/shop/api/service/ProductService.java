@@ -6,7 +6,7 @@ import com.dglazewski.shop.api.entity.Product;
 import java.util.List;
 
 public interface ProductService {
-    DataBaseStatusResponse<Product> addProduct(Product product);
+    DataBaseStatusResponse<Product> saveProduct(Product product);
 
     DataBaseStatusResponse<Product> updateProduct(Long id, Product product);
 

@@ -1,7 +1,6 @@
-package com.dglazewski.shop.gui.view.components.form;
+package com.dglazewski.shop.gui.admin.components;
 
-import com.dglazewski.shop.gui.view.components.validator.RegisterNewProductValidator;
-import com.dglazewski.shop.gui.view.components.validator.Validatable;
+import com.dglazewski.shop.gui.admin.components.validator.ProductValidator;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.textfield.IntegerField;
@@ -10,7 +9,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import lombok.Getter;
 
 @Getter
-public class NewProductFormLayout extends FormLayout implements Validatable {
+public class ProductFormLayout extends FormLayout {
 
     //FIELD
     private final TextField nameTextField;
@@ -19,9 +18,9 @@ public class NewProductFormLayout extends FormLayout implements Validatable {
     private final TextField imageUrlTextField;
 
     //VALIDATOR
-    private final RegisterNewProductValidator registerNewProductValidator;
+    private final ProductValidator productValidator;
 
-    public NewProductFormLayout() {
+    public ProductFormLayout() {
         //FIELD
         this.nameTextField = new TextField("Name");
         this.priceNumberField = new NumberField("Price");
@@ -36,7 +35,7 @@ public class NewProductFormLayout extends FormLayout implements Validatable {
         configFromLayout();
 
         //VALIDATOR
-        this.registerNewProductValidator = new RegisterNewProductValidator();
+        this.productValidator = new ProductValidator();
 
         add(
                 nameTextField, priceNumberField,
@@ -71,7 +70,7 @@ public class NewProductFormLayout extends FormLayout implements Validatable {
         this.priceNumberField.setSuffixComponent(dollarSuffix);
     }
 
-    @Override
+
     public boolean isValid() {
         validate();
         return !nameTextField.isInvalid() && !amountIntegerField.isInvalid() && !priceNumberField.isInvalid() && !imageUrlTextField.isInvalid();
@@ -79,9 +78,9 @@ public class NewProductFormLayout extends FormLayout implements Validatable {
     }
 
     private void validate() {
-        registerNewProductValidator.validateName(nameTextField);
-        registerNewProductValidator.validateAmount(amountIntegerField);
-        registerNewProductValidator.validatePrice(priceNumberField);
-        registerNewProductValidator.validateImageUrl(imageUrlTextField);
+        productValidator.validateName(nameTextField);
+        productValidator.validateAmount(amountIntegerField);
+        productValidator.validatePrice(priceNumberField);
+        productValidator.validateImageUrl(imageUrlTextField);
     }
 }

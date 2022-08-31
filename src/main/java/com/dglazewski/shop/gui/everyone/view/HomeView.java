@@ -1,6 +1,6 @@
-package com.dglazewski.shop.gui.view.everyone;
+package com.dglazewski.shop.gui.everyone.view;
 
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

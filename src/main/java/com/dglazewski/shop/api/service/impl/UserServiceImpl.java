@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                             updatedUser);
                 })
                 .orElse(new DataBaseStatusResponse<>(
-                        Status.RECORD_ALREADY_EXIST));
+                        Status.UNKNOWN_DATABASE_ERROR));
     }
 
     @Override

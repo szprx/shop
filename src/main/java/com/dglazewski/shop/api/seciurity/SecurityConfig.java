@@ -1,6 +1,6 @@
 package com.dglazewski.shop.api.seciurity;
 
-import com.dglazewski.shop.gui.view.everyone.LoginView;
+import com.dglazewski.shop.gui.everyone.view.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

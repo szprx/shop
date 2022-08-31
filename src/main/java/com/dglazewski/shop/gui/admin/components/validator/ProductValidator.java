@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui.view.components.validator;
+package com.dglazewski.shop.gui.admin.components.validator;
 
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
@@ -6,7 +6,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class RegisterNewProductValidator {
+public class ProductValidator {
     public void validateName(TextField nameTextField) {
         String name = nameTextField.getValue();
 

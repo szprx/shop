@@ -1,12 +1,11 @@
-package com.dglazewski.shop.gui.view.everyone;
+package com.dglazewski.shop.gui.everyone.view;
 
 import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.api.service.ProductService;
-import com.dglazewski.shop.gui.view.components.AppLayoutDrawer;
-import com.vaadin.flow.component.Component;
+import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
@@ -65,7 +64,8 @@ public class ProductsView extends VerticalLayout {
 
 
                 } else {
-
+                    addToShoppingCardButton.getUI().ifPresent(ui ->
+                            ui.navigate("login"));
                 }
 
             });

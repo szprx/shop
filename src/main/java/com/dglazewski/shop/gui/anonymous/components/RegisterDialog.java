@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui.view.components;
+package com.dglazewski.shop.gui.anonymous.components;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;

@@ -1,4 +1,4 @@
-package com.dglazewski.shop.gui.view.components.validator;
+package com.dglazewski.shop.gui.anonymous.components.validator;
 
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;

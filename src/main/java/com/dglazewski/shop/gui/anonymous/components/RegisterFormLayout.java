@@ -1,7 +1,6 @@
-package com.dglazewski.shop.gui.view.components.form;
+package com.dglazewski.shop.gui.anonymous.components;
 
-import com.dglazewski.shop.gui.view.components.validator.RegisterFormLayoutValidator;
-import com.dglazewski.shop.gui.view.components.validator.Validatable;
+import com.dglazewski.shop.gui.anonymous.components.validator.RegisterFormLayoutValidator;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -9,7 +8,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import lombok.Getter;
 
 @Getter
-public class RegisterFormLayout extends FormLayout implements Validatable {
+public class RegisterFormLayout extends FormLayout {
 
     //FIELD
     private final TextField firstNameTextField;
@@ -52,7 +51,7 @@ public class RegisterFormLayout extends FormLayout implements Validatable {
         setColspan(emailField, 2);
     }
 
-    @Override
+
     public boolean isValid() {
         validate();
         return !firstNameTextField.isInvalid() && !lastNameTextField.isInvalid() && !emailField.isInvalid() && !passwordField.isInvalid();
