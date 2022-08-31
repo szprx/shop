@@ -18,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@Table(name = "CUSTOMERS")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,14 +40,10 @@ public class Customer {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Column(name = "orders")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @Column(name = "shopping_card_products")
-    private List<Product> shoppingCard = new ArrayList<>();
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL)
+    private Card shoppingCard;
 
     public static Customer create(String name, String lastName, String email, String password) {
         return Customer.builder()
@@ -57,7 +51,7 @@ public class Customer {
                 .lastName(lastName)
                 .user(User.create(email, password, RoleEnum.ROLE_CUSTOMER, false))
                 .orders(new ArrayList<>())
-                .shoppingCard(new ArrayList<>())
+//                .shoppingCard()
                 .build();
     }
 

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,9 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,27 +23,20 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "ORDERS")
-public class Order {
+@Table(name = "CARD")
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "ORDER_PRODUCTS",
-            joinColumns = @JoinColumn(name = "ORDER_ID",referencedColumnName = "ID"),
+        @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "CARD_PRODUCTS",
+            joinColumns = @JoinColumn(name = "CARD_ID",referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID",referencedColumnName = "ID"))
     private List<Product> products = new ArrayList<>();
 
-    @Column(name = "is_paid")
-    private boolean isPaid;
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CUSTOMER_ID")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "ID")
     private Customer customer;
-
-    @Column(name = "order_date")
-    private LocalDate orderDate;
 }
+//todo naprawiac
