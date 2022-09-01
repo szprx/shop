@@ -9,4 +9,5 @@ TODO: dodac responsywnosc https://vaadin.com/directory/component/responsive-layo
 
 TODO: adding to shopping card firstly, later creating order, later listr of orders, later user account view
 TODO: change security to my own config
-TODO: change customerService to do what it says so - add new class for email sending
+TODO: change routes names
+TODO: repair my orders route (fetch.type edger)
