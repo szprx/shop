@@ -4,12 +4,14 @@ import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.gui.admin.components.validator.ProductValidator;
 import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Image;
@@ -22,10 +24,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.validator.DoubleRangeValidator;
-import com.vaadin.flow.data.validator.IntegerRangeValidator;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -48,6 +47,8 @@ public class ProductsMenageAdminView extends VerticalLayout {
     private final NumberField priceNumberField;
     private final IntegerField amountIntegerField;
 
+    //VALIDATOR
+    private final ProductValidator productValidator;
 
     //GRID
     private final Grid<Product> productGrid;
@@ -68,7 +69,6 @@ public class ProductsMenageAdminView extends VerticalLayout {
 
 
     public ProductsMenageAdminView(ProductService productService) {
-
         //SERVICE
         this.productService = productService;
         this.products = this.productService.getAllProducts().getEntity();
@@ -89,6 +89,9 @@ public class ProductsMenageAdminView extends VerticalLayout {
         this.imageUrlTextField = new TextField();
         this.imageUrlTextField.setWidthFull();
 
+        //VALIDATOR
+        this.productValidator = new ProductValidator();
+
         //GRID
         this.productGrid = new Grid<>(Product.class, false);
         this.dataView = this.productGrid.setItems(products);
@@ -108,7 +111,6 @@ public class ProductsMenageAdminView extends VerticalLayout {
 
         configSearching();
         configCss();
-
         add(new HorizontalLayout(this.searchField));
         add(this.productGrid);
     }
@@ -138,8 +140,8 @@ public class ProductsMenageAdminView extends VerticalLayout {
                 .setSortable(true).setWidth("110px").setFlexGrow(0);
         this.imageColumn = this.productGrid.addComponentColumn(product -> {
             Image image = new Image(product.getImageUrl(), "no image available");
-            image.setWidth(80, Unit.PIXELS);
-            image.setHeight(80, Unit.PIXELS);
+            image.setWidth(150, Unit.PIXELS);
+            image.setHeight(150, Unit.PIXELS);
             return image;
         }).setHeader("Preview").setWidth("400px").setFlexGrow(2);
         this.editColumn = this.productGrid.addComponentColumn(product -> {
@@ -155,21 +157,19 @@ public class ProductsMenageAdminView extends VerticalLayout {
     }
 
     private void bindFieldsToColumns() {
-        this.binder.forField(this.nameTextField).asRequired("Fill this field")
+        this.binder.forField(this.nameTextField)
                 .bind(Product::getName, Product::setName);
         this.nameColumn.setEditorComponent(this.nameTextField);
 
-        this.binder.forField(this.amountIntegerField).asRequired("Fill this field")
-                .withValidator(new IntegerRangeValidator("Invalid amount", 0, 100000))
+        this.binder.forField(this.amountIntegerField)
                 .bind(Product::getAmount, Product::setAmount);
         this.amountColumn.setEditorComponent(this.amountIntegerField);
 
-        this.binder.forField(this.priceNumberField).asRequired("Fill this field")
-                .withValidator(new DoubleRangeValidator("Invalid price", 0.01, 1000000.00))
+        this.binder.forField(this.priceNumberField)
                 .bind(Product::getPrice, Product::setPrice);
         this.priceColumn.setEditorComponent(this.priceNumberField);
 
-        this.binder.forField(this.imageUrlTextField).asRequired("Fill this field")
+        this.binder.forField(this.imageUrlTextField)
                 .bind(Product::getImageUrl, Product::setImageUrl);
         this.imageColumn.setEditorComponent(this.imageUrlTextField);
     }
@@ -182,7 +182,7 @@ public class ProductsMenageAdminView extends VerticalLayout {
     private HorizontalLayout getEditingModeActions() {
         //SAVE BUTTON
         Button saveButton = new Button("Save", e -> {
-            try {
+            if (this.areProductFieldsValid()) {
                 DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.updateProduct(
                         this.productGridEditor.getItem().getId(),
                         Product.create(
@@ -191,13 +191,10 @@ public class ProductsMenageAdminView extends VerticalLayout {
                                 this.amountIntegerField.getValue(),
                                 this.imageUrlTextField.getValue()));
                 Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
-                if (dataBaseStatusResponse.getStatus().compareTo(Status.RECORD_UPDATED_SUCCESSFULLY) == 0) {
+                if (dataBaseStatusResponse.getStatus().equals(Status.RECORD_UPDATED_SUCCESSFULLY)) {
                     this.productGridEditor.save();
                 }
                 this.productGrid.getDataProvider().refreshAll();
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
-                Notification.show("ONE OR MORE OF THE VALUES OF THE PRODUCT ARE EMPTY");
             }
         });
 
@@ -220,11 +217,23 @@ public class ProductsMenageAdminView extends VerticalLayout {
 
         productGrid.setWidthFull();
         productGrid.setHeight("830px");
-        Style style = this.getElement().getStyle();
-//        style.set("margin", "10px");
+        productGrid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
     }
 
     private boolean matchesTerm(String value, String searchTerm) {
         return value.toLowerCase().contains(searchTerm.toLowerCase());
+    }
+
+    private boolean areProductFieldsValid() {
+        validateProductFields();
+        return !nameTextField.isInvalid() && !amountIntegerField.isInvalid() && !priceNumberField.isInvalid() && !imageUrlTextField.isInvalid();
+
+    }
+
+    private void validateProductFields() {
+        productValidator.validateName(nameTextField);
+        productValidator.validateAmount(amountIntegerField);
+        productValidator.validatePrice(priceNumberField);
+        productValidator.validateImageUrl(imageUrlTextField);
     }
 }

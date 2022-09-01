@@ -15,7 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public DataBaseStatusResponse<Product> saveProduct(Product newProduct) {
@@ -23,11 +23,6 @@ public class ProductServiceImpl implements ProductService {
         if (product.isPresent()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_ALREADY_EXIST);
-        }
-        if (!newProduct.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS
-            );
         }
         return new DataBaseStatusResponse<>(
                 Status.RECORD_CREATED_SUCCESSFULLY,
@@ -59,11 +54,6 @@ public class ProductServiceImpl implements ProductService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
         }
-        if (!newProduct.isValid()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_HAS_NOT_VALID_FIELDS
-            );
-        }
         return product
                 .map(oldProduct -> {
                     Product updatedProduct = oldProduct.updateWith(newProduct);
@@ -74,7 +64,5 @@ public class ProductServiceImpl implements ProductService {
                 })
                 .orElse(new DataBaseStatusResponse<>(
                         Status.UNKNOWN_DATABASE_ERROR));
-
-        //TODO: check if this response is valid
     }
 }

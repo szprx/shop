@@ -75,8 +75,8 @@ public class ProductsView extends VerticalLayout {
             activities.setAlignItems(Alignment.CENTER);
 
             Image image = new Image(product.getImageUrl(), "no image available");
-            image.setWidth(130, Unit.PIXELS);
-            image.setHeight(130, Unit.PIXELS);
+            image.setWidth(150, Unit.PIXELS);
+            image.setHeight(150, Unit.PIXELS);
 
             VerticalLayout infoLayout = new VerticalLayout();
             infoLayout.setSpacing(false);

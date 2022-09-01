@@ -60,18 +60,13 @@ public class ProductAddAdminView extends VerticalLayout {
     private void configAddProductButton() {
         this.addProductButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.addProductButton.addClickListener(buttonClickEvent -> {
-            try {
-                if (this.productFormLayout.isValid()) {
-                    DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.saveProduct(Product.create(
-                            this.productFormLayout.getNameTextField().getValue(),
-                            this.productFormLayout.getPriceNumberField().getValue(),
-                            this.productFormLayout.getAmountIntegerField().getValue(),
-                            this.productFormLayout.getImageUrlTextField().getValue()));
-                    Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
-                }
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
-                Notification.show("ONE OR MORE OF THE VALUES OF THE PRODUCT ARE EMPTY");
+            if (this.productFormLayout.isValid()) {
+                DataBaseStatusResponse<Product> dataBaseStatusResponse = this.productService.saveProduct(Product.create(
+                        this.productFormLayout.getNameTextField().getValue(),
+                        this.productFormLayout.getPriceNumberField().getValue(),
+                        this.productFormLayout.getAmountIntegerField().getValue(),
+                        this.productFormLayout.getImageUrlTextField().getValue()));
+                Notification.show(dataBaseStatusResponse.getStatus().toString().replace("_", " "));
             }
         });
     }
