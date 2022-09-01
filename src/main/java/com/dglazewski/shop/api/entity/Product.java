@@ -56,21 +56,4 @@ public class Product {
                 .imageUrl(product.getImageUrl())
                 .build();
     }
-//todo delete this and add it at update form ProductsAdminView
-    public boolean isValid() {
-        boolean isValid = true;
-        if (this.name == null || this.name.trim().equals("")) {
-            isValid = false;
-        }
-        if (this.price < 0.01) {
-            isValid = false;
-        }
-        if (this.amount < 0) {
-            isValid = false;
-        }
-        if (this.imageUrl == null || this.imageUrl.trim().equals("")) {
-            isValid = false;
-        }
-        return isValid;
-    }
 }
