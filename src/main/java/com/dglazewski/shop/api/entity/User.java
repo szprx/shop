@@ -3,10 +3,8 @@ package com.dglazewski.shop.api.entity;
 import com.dglazewski.shop.api.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,10 +18,8 @@ import javax.persistence.Table;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
-@Getter
-@Setter
+@Data
 @Table(name = "USERS")
 public class User {
     @Id

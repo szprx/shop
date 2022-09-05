@@ -2,6 +2,7 @@ package com.dglazewski.shop.api.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+@Data
 @Table(name = "PRODUCTS")
 public class Product {
     @Id

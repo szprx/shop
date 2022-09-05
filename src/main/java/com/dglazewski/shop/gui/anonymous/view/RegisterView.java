@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 @AnonymousAllowed
 public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
 
-    private static final String REGISTER_SITE_URL = "http://localhost:8080/register";
+    private static final String REGISTER_SITE_URL = "https://spva-shop.herokuapp.com/register";
 
     //SERVICE
     private final String role = SecurityService.getCurrentUserRole();

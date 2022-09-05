@@ -1,6 +1,7 @@
 package com.dglazewski.shop.api.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +23,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @Table(name = "orders")
 public class Order {
     @Id

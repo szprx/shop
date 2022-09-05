@@ -2,6 +2,7 @@ package com.dglazewski.shop.api.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Getter
+@Data
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,6 @@
 package com.dglazewski.shop.api.enums;
 
 public enum Status {
-    RECORD_HAS_NOT_VALID_FIELDS,
     RECORD_DOESNT_EXIST,
     UNKNOWN_DATABASE_ERROR,
     RECORD_ALREADY_EXIST,

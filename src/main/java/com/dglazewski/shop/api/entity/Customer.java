@@ -3,6 +3,7 @@ package com.dglazewski.shop.api.entity;
 import com.dglazewski.shop.api.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @Builder
 public class Customer {
     @Id
