@@ -128,7 +128,7 @@
                                     <goal>build-frontend</goal>
                                 </goals>
                                 <configuration>
-                                    <productionMode>false</productionMode>
+                                    <productionMode>true</productionMode>
                                 </configuration>
                             </execution>
                         </executions>
