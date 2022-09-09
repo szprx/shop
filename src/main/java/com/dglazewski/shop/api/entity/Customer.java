@@ -59,7 +59,7 @@ public class Customer {
                 .id(this.id)
                 .name(customer.getName())
                 .lastName(customer.getLastName())
-                .user(this.user)
+                .user(this.user.updateWith(customer.getUser()))
                 .orders(customer.getOrders())
                 .shoppingCard(customer.getShoppingCard())
                 .build();
