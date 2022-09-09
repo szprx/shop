@@ -34,7 +34,7 @@ class CustomerRepositoryTest {
 
         String email = "testEmail@gmail.com";
         String password = "testPassword";
-        String verificationCode = "verificationCodeTest";
+        String verificationCode = "testVerificationCode";
         boolean enabled = true;
         RoleEnum roleCustomer = RoleEnum.ROLE_CUSTOMER;
         User user = new User(id, email, password, verificationCode, enabled, roleCustomer);
@@ -62,7 +62,12 @@ class CustomerRepositoryTest {
         //then
         assertThat(retrievedCustomer.getName()).isEqualTo(testCustomer.getName());
         assertThat(retrievedCustomer.getLastName()).isEqualTo(testCustomer.getLastName());
-        assertThat(retrievedCustomer.getUser()).isEqualTo(testCustomer.getUser());
+
+        assertThat(retrievedCustomer.getUser().getEmail()).isEqualTo(testCustomer.getUser().getEmail());
+        assertThat(retrievedCustomer.getUser().getPassword()).isEqualTo(testCustomer.getUser().getPassword());
+        assertThat(retrievedCustomer.getUser().getVerificationCode()).isEqualTo(testCustomer.getUser().getVerificationCode());
+        assertThat(retrievedCustomer.getUser().isEnabled()).isEqualTo(testCustomer.getUser().isEnabled());
+        assertThat(retrievedCustomer.getUser().getRole()).isEqualTo(testCustomer.getUser().getRole());
     }
 
     @Test
