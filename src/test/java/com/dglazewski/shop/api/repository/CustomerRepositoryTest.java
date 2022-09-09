@@ -58,7 +58,7 @@ class CustomerRepositoryTest {
     void itShouldFindCustomerByEmail() {
         //given
         //when
-        Customer retrievedCustomer = customerRepository.findByUserEmail("testEmail@gmail.com").get();
+        Customer retrievedCustomer = customerRepository.findByUserEmail(testCustomer.getUser().getEmail()).get();
         //then
         assertThat(retrievedCustomer.getName()).isEqualTo(testCustomer.getName());
         assertThat(retrievedCustomer.getLastName()).isEqualTo(testCustomer.getLastName());
