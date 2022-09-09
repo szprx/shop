@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    Optional<Customer> findByUserEmail(String email);
+    Optional<Customer> findByUserEmail(String email);//required when registered, check if email is occupied
 }
