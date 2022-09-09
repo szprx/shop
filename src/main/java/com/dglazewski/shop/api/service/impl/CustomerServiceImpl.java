@@ -81,6 +81,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public DataBaseStatusResponse<Customer> deleteCustomer(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_DOESNT_EXIST);
+        }
+        customerRepository.deleteById(id);
         return new DataBaseStatusResponse<>(
                 Status.RECORD_DELETED_SUCCESSFULLY);
     }
