@@ -13,11 +13,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import javax.annotation.security.RolesAllowed;
-
 @Route(value = "admin/product/add", layout = AppLayoutDrawer.class)
 @PageTitle("Add product | ADMIN")
-@RolesAllowed("ADMIN")
 public class ProductAddAdminView extends VerticalLayout {
 
     //SERVICE
