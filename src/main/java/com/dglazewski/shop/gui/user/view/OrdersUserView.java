@@ -25,7 +25,6 @@ import javax.annotation.security.RolesAllowed;
 
 @Route(value = "user/orders", layout = AppLayoutDrawer.class)
 @PageTitle(" Orders | User")
-@RolesAllowed("CUSTOMER")
 public class OrdersUserView extends VerticalLayout {
     private final CustomerService customerService;
     private final SecurityService securityService;

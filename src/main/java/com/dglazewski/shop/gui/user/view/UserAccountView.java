@@ -24,7 +24,6 @@ import javax.annotation.security.RolesAllowed;
 
 @Route(value = "myAccount", layout = AppLayoutDrawer.class)
 @PageTitle("My account | USER")
-@RolesAllowed("CUSTOMER")
 public class UserAccountView extends Div {
     private final CustomerService customerService;
     private final SecurityService securityService;

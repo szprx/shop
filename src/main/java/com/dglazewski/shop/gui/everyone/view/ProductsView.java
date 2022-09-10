@@ -26,7 +26,6 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route(value = "product/all", layout = AppLayoutDrawer.class)
 @PageTitle("Products")
-@AnonymousAllowed
 public class ProductsView extends VerticalLayout {
 
     //SERVICE

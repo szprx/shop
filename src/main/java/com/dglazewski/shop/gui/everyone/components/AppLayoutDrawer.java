@@ -8,7 +8,7 @@ import com.dglazewski.shop.gui.user.view.OrdersUserView;
 import com.dglazewski.shop.gui.user.view.ShoppingCardView;
 import com.dglazewski.shop.gui.user.view.UserAccountView;
 import com.dglazewski.shop.gui.everyone.view.HomeView;
-import com.dglazewski.shop.gui.everyone.view.LoginView;
+import com.dglazewski.shop.gui.anonymous.view.LoginView;
 import com.dglazewski.shop.gui.admin.view.OrdersAdminView;
 import com.dglazewski.shop.gui.admin.view.ProductAddAdminView;
 import com.dglazewski.shop.gui.admin.view.ProductsMenageAdminView;

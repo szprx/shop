@@ -3,35 +3,28 @@ package com.dglazewski.shop.gui.anonymous.view;
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.enums.Status;
-import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.api.service.RegistrationService;
+import com.dglazewski.shop.gui.anonymous.components.RegisterDialog;
 import com.dglazewski.shop.gui.anonymous.components.RegisterFormLayout;
 import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
-import com.dglazewski.shop.gui.anonymous.components.RegisterDialog;
-import com.dglazewski.shop.gui.everyone.view.HomeView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 @Route(value = "register", layout = AppLayoutDrawer.class)
 @PageTitle("Register")
-@AnonymousAllowed
-public class RegisterView extends VerticalLayout implements BeforeEnterObserver {
+public class RegisterView extends VerticalLayout {
 
     private static final String REGISTER_SITE_URL = "https://spva-shop.herokuapp.com/register";
 
     //SERVICE
-    private final String role = SecurityService.getCurrentUserRole();
     private final RegistrationService registrationService;
 
     //FORM LAYOUT
@@ -84,12 +77,5 @@ public class RegisterView extends VerticalLayout implements BeforeEnterObserver 
                 }
             }
         });
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if (!"ROLE_ANONYMOUS".equals(role)) {
-            beforeEnterEvent.forwardTo(HomeView.class);
-        }
     }
 }

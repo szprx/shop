@@ -10,7 +10,6 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 @Route(value = "", layout = AppLayoutDrawer.class)
 @PageTitle("HOME")
-@AnonymousAllowed
 public class HomeView extends VerticalLayout {
     public HomeView() {
         add(new Paragraph("Hello user!"));

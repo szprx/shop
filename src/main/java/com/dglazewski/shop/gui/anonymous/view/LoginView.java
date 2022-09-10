@@ -1,7 +1,8 @@
-package com.dglazewski.shop.gui.everyone.view;
+package com.dglazewski.shop.gui.anonymous.view;
 
 import com.dglazewski.shop.api.seciurity.SecurityService;
 import com.dglazewski.shop.gui.everyone.components.AppLayoutDrawer;
+import com.dglazewski.shop.gui.everyone.view.HomeView;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -9,12 +10,10 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 
 @Route(value = "login", layout = AppLayoutDrawer.class)
 @PageTitle("Login")
-@AnonymousAllowed
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     //SERVICE
