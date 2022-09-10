@@ -10,7 +10,6 @@ import com.dglazewski.shop.api.enums.Status;
 import com.dglazewski.shop.api.repository.CustomerRepository;
 import com.dglazewski.shop.api.repository.UserRepository;
 import com.dglazewski.shop.api.service.impl.CustomerServiceImpl;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,11 +62,6 @@ class CustomerServiceTest {
         testCustomer = new Customer(id, name, lastName, user, orders, card);
     }
 
-    @AfterEach
-    void tearDown() {
-        testCustomer = null;
-    }
-
     @Test
     void itShouldSaveCustomer() {
         when(userRepository.findByEmail(anyString()))
@@ -79,7 +73,7 @@ class CustomerServiceTest {
     }
 
     @Test
-    void itShouldNotSaveCustomer_BecauseRecordAlreadyExist() {
+    void itShouldNotSaveCustomer_BecauseRecordWithThisEmailAlreadyExist() {
         when(userRepository.findByEmail(anyString()))
                 .thenReturn(Optional.of(testCustomer.getUser()));
 

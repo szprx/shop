@@ -71,7 +71,7 @@ class CustomerRepositoryTest {
     }
 
     @Test
-    void itShouldNotFindCustomerByEmail() {
+    void itShouldNotFindCustomerByEmail_BecauseRecordDoesntExist() {
         //given
         //when
         Optional<Customer> optionalCustomer = customerRepository.findByUserEmail("wrongTestEmail@gmail.com");
