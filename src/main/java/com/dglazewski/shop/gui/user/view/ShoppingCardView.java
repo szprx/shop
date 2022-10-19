@@ -9,7 +9,7 @@ import javax.annotation.security.RolesAllowed;
 
 
 @Route(value = "user/shopping-card", layout = AppLayoutDrawer.class)
-@PageTitle(" Shopping Card | User")
+@PageTitle("Shopping Card")
 public class ShoppingCardView extends VerticalLayout {
     public ShoppingCardView() {
         //todo check how to create card
