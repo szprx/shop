@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public DataBaseStatusResponse<User> addUser(User newUser) {
+    public DataBaseStatusResponse<User> saveUser(User newUser) {
         Optional<User> user = userRepository.findByEmail(newUser.getEmail());
         if (user.isPresent()) {
             return new DataBaseStatusResponse<>(
@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
                 userRepository.save(User.create(
                         newUser.getEmail(),
                         passwordEncoder.encode(newUser.getPassword()),
-                        newUser.getRole(),true))
+                        newUser.getRole(),
+                        true))
         );
     }
 

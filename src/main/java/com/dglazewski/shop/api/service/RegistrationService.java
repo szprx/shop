@@ -13,4 +13,6 @@ public interface RegistrationService {
     void sendVerificationEmail(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException;
 
     DataBaseStatusResponse<User> verify(String verificationCode);
+
+    DataBaseStatusResponse<Customer> registerWithoutVerify(Customer newCustomer);
 }

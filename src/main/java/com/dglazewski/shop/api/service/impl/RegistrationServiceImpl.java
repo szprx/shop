@@ -27,6 +27,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final CustomerService customerService;
+    //TODO: change email sender to SendGrid
 
     @Override
     public DataBaseStatusResponse<Customer> register(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException {
@@ -87,5 +88,14 @@ public class RegistrationServiceImpl implements RegistrationService {
         return new DataBaseStatusResponse<>(
                 Status.USER_VERIFICATION_SUCCESS,
                 userRepository.save(user.get()));
+    }
+    @Override
+    public DataBaseStatusResponse<Customer> registerWithoutVerify(Customer newCustomer) {
+        String encodedPassword = passwordEncoder.encode(newCustomer.getUser().getPassword());
+        newCustomer.getUser().setPassword(encodedPassword);
+        newCustomer.getUser().setVerificationCode(null);
+        newCustomer.getUser().setEnabled(true);
+        return customerService.saveCustomer(newCustomer);
+
     }
 }

@@ -35,6 +35,7 @@ public class RegisterView extends VerticalLayout {
 
     //DIALOG
     private final RegisterDialog registerDialog;
+    private final RegisterDialog failureDialog;
 
     public RegisterView(RegistrationService registrationService) {
 
@@ -49,32 +50,43 @@ public class RegisterView extends VerticalLayout {
         configRegisterButton();
 
         //DIALOG
-        this.registerDialog = new RegisterDialog("Registration successful", "Verification link has been send to your email. Please confirm your account.");
+//        this.registerDialog = new RegisterDialog("Registration successful", "Verification link has been send to your email. Please confirm your account.");
+        this.registerDialog = new RegisterDialog("Registration successful", "Verification link would be send if this app would be  different server.");
+        this.failureDialog = new RegisterDialog("Registration failure", "Registration failure. Try again later");
 
         add(new Paragraph("Register now!"));
 
         add(this.registerFormLayout,
                 this.registerButton,
-                this.registerDialog);
+                this.registerDialog,
+                this.failureDialog);
     }
 
     private void configRegisterButton() {
         this.registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         this.registerButton.addClickListener(buttonClickEvent -> {
             if (registerFormLayout.isValid()) {
-                try {
-                    DataBaseStatusResponse<Customer> response = registrationService.register(Customer.create(
+//                try {
+                    ///////////////////************WHEN WE WANT EMAIL VERIFY************///////////////////
+//                    DataBaseStatusResponse<Customer> response = registrationService.register(Customer.create(
+//                            registerFormLayout.getFirstNameTextField().getValue(),
+//                            registerFormLayout.getLastNameTextField().getValue(),
+//                            registerFormLayout.getEmailField().getValue(),
+//                            registerFormLayout.getPasswordField().getValue()), REGISTER_SITE_URL);
+                    DataBaseStatusResponse<Customer> response = registrationService.registerWithoutVerify(Customer.create(
                             registerFormLayout.getFirstNameTextField().getValue(),
                             registerFormLayout.getLastNameTextField().getValue(),
                             registerFormLayout.getEmailField().getValue(),
-                            registerFormLayout.getPasswordField().getValue()), REGISTER_SITE_URL);
+                            registerFormLayout.getPasswordField().getValue()));
                     Notification.show(response.getStatus().toString().replace("_", " "));
-                    if (response.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
-                        this.registerDialog.getDialog().open();
-                    }
-                } catch (MessagingException | UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                if (response.getStatus() == Status.RECORD_CREATED_SUCCESSFULLY) {
+                    this.registerDialog.getDialog().open();
+                } else {
+                    this.failureDialog.getDialog().open();
                 }
+//                } catch (MessagingException | UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }

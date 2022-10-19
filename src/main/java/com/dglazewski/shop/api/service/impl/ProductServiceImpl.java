@@ -54,6 +54,11 @@ public class ProductServiceImpl implements ProductService {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
         }
+        Optional<Product> productFoundByName = productRepository.findByName(newProduct.getName());
+        if (productFoundByName.isPresent()) {
+            return new DataBaseStatusResponse<>(
+                    Status.RECORD_ALREADY_EXIST);
+        }
         return product
                 .map(oldProduct -> {
                     Product updatedProduct = oldProduct.updateWith(newProduct);
