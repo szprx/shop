@@ -8,6 +8,6 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 
 @Route(value = "user/notifications", layout = AppLayoutDrawer.class)
-@PageTitle(" Notifications | User")
+@PageTitle(" Notifications")
 public class NotificationsView extends VerticalLayout {
 }
