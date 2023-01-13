@@ -10,4 +10,5 @@ import javax.annotation.security.RolesAllowed;
 @Route(value = "user/notifications", layout = AppLayoutDrawer.class)
 @PageTitle("Notifications")
 public class NotificationsView extends VerticalLayout {
+    //TODO
 }
