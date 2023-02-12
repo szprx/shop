@@ -9,6 +9,7 @@ import com.dglazewski.shop.api.service.CustomerService;
 import com.dglazewski.shop.api.service.RegistrationService;
 import lombok.AllArgsConstructor;
 import net.bytebuddy.utility.RandomString;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +28,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final CustomerService customerService;
-    //TODO: change email sender to SendGrid
 
     @Override
     public DataBaseStatusResponse<Customer> register(Customer newCustomer, String siteURL) throws MessagingException, UnsupportedEncodingException {
@@ -90,6 +90,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 userRepository.save(user.get()));
     }
     @Override
+//    @Profile({"local"})
     public DataBaseStatusResponse<Customer> registerWithoutVerify(Customer newCustomer) {
         String encodedPassword = passwordEncoder.encode(newCustomer.getUser().getPassword());
         newCustomer.getUser().setPassword(encodedPassword);

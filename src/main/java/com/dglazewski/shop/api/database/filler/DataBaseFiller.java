@@ -1,9 +1,11 @@
 package com.dglazewski.shop.api.database.filler;
 
+import com.dglazewski.shop.api.entity.Customer;
 import com.dglazewski.shop.api.entity.Product;
 import com.dglazewski.shop.api.entity.User;
 import com.dglazewski.shop.api.enums.RoleEnum;
 import com.dglazewski.shop.api.service.ProductService;
+import com.dglazewski.shop.api.service.RegistrationService;
 import com.dglazewski.shop.api.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +18,7 @@ public class DataBaseFiller {
 
     private ProductService productService;
     private UserService userService;
+    private RegistrationService registrationService;
 
     @Bean
     public CommandLineRunner commandLineRunner() {
@@ -34,6 +37,7 @@ public class DataBaseFiller {
             productService.saveProduct(Product.create("grasdapes", 0.82, 21, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrOApseLKSrThxCg0ITCumsNGlZeBlJRXbVfxLZTVy2NyAnT10QkptFgiG92Q74yVhL5c&usqp=CAU"));
 
             userService.saveUser(User.create("admin", "admin", RoleEnum.ROLE_ADMIN, true));
+            registrationService.registerWithoutVerify(Customer.create("customer","funny","customer","customer"));
         };
     }
 }
