@@ -22,8 +22,8 @@ password : admin
 ```
 For normal user:
 ```bash
-login : pgadmin4@pgadmin.org
-password : adming
+login : customer
+password : customer
 ```
 #### Why _"SPVA SHOP"_?
 It's because two major technologies whose were used to create this app starts with Sp and Va.
