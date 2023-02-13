@@ -13,4 +13,6 @@ public interface ProductService {
     DataBaseStatusResponse<Product> getProduct(Long id);
 
     DataBaseStatusResponse<List<Product>> getAllProducts();
+
+    DataBaseStatusResponse<Product> changeAmount(Product product, int amountChange);
 }

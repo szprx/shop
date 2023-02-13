@@ -3,7 +3,7 @@ package com.dglazewski.shop.api.service;
 import com.dglazewski.shop.api.database.response.DataBaseStatusResponse;
 import com.dglazewski.shop.api.entity.Customer;
 
-public interface CustomerService {
+public interface CustomerService extends CardService {
     DataBaseStatusResponse<Customer> saveCustomer(Customer newCustomer);
 
     DataBaseStatusResponse<Customer> updateCustomer(Long id, Customer updatedCustomer);//edycja konta gdzie cascadeType powinno automatycznie zaktualizowac reszte

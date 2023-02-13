@@ -48,16 +48,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public DataBaseStatusResponse<Product> changeAmount(Product product, int amountChange) {
+        int newAmount = product.getAmount() + amountChange;
+        if (newAmount<0) {
+            return new DataBaseStatusResponse<>(
+                    Status.OPERATION_FORBIDDEN);
+        }
+        product.setAmount(newAmount);
+        return updateProduct(product.getId(), product);
+    }
+
+    @Override
     public DataBaseStatusResponse<Product> updateProduct(Long id, Product newProduct) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
             return new DataBaseStatusResponse<>(
                     Status.RECORD_DOESNT_EXIST);
-        }
-        Optional<Product> productFoundByName = productRepository.findByName(newProduct.getName());
-        if (productFoundByName.isPresent()) {
-            return new DataBaseStatusResponse<>(
-                    Status.RECORD_ALREADY_EXIST);
         }
         return product
                 .map(oldProduct -> {
